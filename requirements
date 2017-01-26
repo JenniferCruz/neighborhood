@@ -1,0 +1,30 @@
+AS USER:
+-- I can see a featured map of a specific neighborhood as soon as I load the page
+-- I can see 5 or more highlighted locations markers on the featured map
+-- I can also see those locations on a list
+-- I can see everything I need in a single page (single-page app)
+- I can filter the locations through an input field OR a dropdown menu. List items and markers on map should update dynamically accordingly.
+- I can see an animation (bounce, color-change, etc) on the correspondent marker when I click on a marker or a list item.
+- I can click on a marker OR a list-item to see info from a third-party API (flickr imgs, yelp, wikipedia, etc. -Not from Google libraries-) in an infoWindow
+- I can access the app from a desktop, tablet or mobile and see it nice in all devices.
+- I can see an adequate notification when something fails (ex.: google or any other third-party API doesn't load)
+
+
+AS APP:
+- I call the Google Maps API only once, to add a full-screen map to my page.
+- I use KO to handle info on page subject to change (such as filter and list), to track click events on list items
+- I handle things done by Maps API with the API and not KO (ex.: creating markers -they should not be KO observables-, tracking click events on them, making/refreshing the map) 
+- I load all data APIs asynchronously
+
+
+
+Indicate on UI AND README what interfaces you are using.
+
+Data is loaded from an external source (personal challenge - alternative: LocalStorage)
+DOM is not updated manually but via KO.
+
+A README file is included detailing all steps required to successfully run the application.
+
+Comments are present and effectively explain longer code procedures.
+
+

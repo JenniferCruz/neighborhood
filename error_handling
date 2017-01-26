@@ -1,0 +1,6 @@
+	GOOGLE
+
+Type Check
+Check if google variable exists before working with it. Else, pop up a window saying there was a probleam loading the Map and propose a solution for the user.
+if (typeof google === 'undefined')
+
