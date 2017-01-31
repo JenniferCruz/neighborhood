@@ -3,32 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/lib/css/bootstrap.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-    <section class="text-content">
-        <h1>My neighborhood</h1>
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Pellentesque condimentum ultrices tortor, quis ornare dui elementum vel.
-            Fusce nunc metus, mattis non vestibulum id, ultricies at orci.
-            Vivamus faucibus vitae erat bibendum porttitor.
-        </p>
+    <div class="row">
+        <section class="col-sm-3 text-content">
+            <header>
+                <h4>Get to know</h4>
+                <h1 class="neighborhood">La Zona Colonial</h1>
+                <h4>in Santo Domingo,</h4>
+                <h4>Dominican Republic</h4>
+            </header>
+            <p>
+                One of the first cities to be ever built in America, La Zona Colonial
+                is now but a small neighborhood in the vibrant Caribbean city of Santo Domingo,
+                full with life and things to see*. Here are a few of the places recommended
+                by my sister:
+            </p>
 
-        <em>Filter by: </em>
-        <select data-bind="options: tags, value: selectedFilter, event: { change: filter}"></select>
-
-        <ul data-bind="foreach: locations">
-            <li data-bind="text: $data.name, visible: $data.visible,
-               css: { selected: $data == $root.selectedLocation() },
-               click: $root.select"></li>
-        </ul>
-    </section>
-    <section id="map" class="map-content">
-        MAP
-    </section>
-
+            <div class="form-group">
+                <em>Filter by: </em>
+                <select data-bind="options: tags, value: selectedFilter, event: { change: filter}" class="form-control"></select>
+            </div>
+            <ul data-bind="foreach: locations" class="locations-list">
+                <li data-bind="text: $data.name, visible: $data.visible,
+                   css: { selected: $data == $root.selectedLocation() },
+                   click: $root.select" class="location-item"></li>
+            </ul>
+        </section>
+        <section id="map" class="col-sm-9 map-content">
+            MAP
+        </section>
+    </div>
+    <footer class="container-fluid">
+        <p>* Sorry, but the beaches are about 45min drive!</p>
+        <p>Credits or something here :P</p>
+    </footer>
 
     <script src="js/lib/knockout-3.4.1.js"></script>
     <script src="js/map.js"></script>
@@ -38,3 +51,6 @@
     </script>
 </body>
 </html>
+
+<!--https://snazzymaps.com/style/6793/grayscale-yellow-->
+<!--http://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_temp_blog&stacked=h-->

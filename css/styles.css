@@ -3,18 +3,38 @@ html, body, .map-content {
 }
 
 body {
-    background-color: lightblue;
+    background-color: #bdbdbd;
 }
 
 li.selected {
-    color: red;
+    background-color: #fed41c;
 }
 
 .text-content {
-    /*width: 25%;*/
+    padding: 2em;
 }
 
 .map-content {
     /*width: 72%;*/
-    background-color: lightslategrey;
+    /*background-color: lightslategrey;*/
+}
+
+.location-item {
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    margin-bottom: -1px;
+    border: 1px solid #ddd;
+}
+
+.locations-list {
+    padding-left: 0;
+    margin-bottom: 20px;
+}
+
+header {
+    color: #ddd;
+}
+.neighborhood {
+    color: #fed41c;
 }
