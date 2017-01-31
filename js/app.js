@@ -48,6 +48,7 @@ var LocationsViewModel = function() {
     self.tags = ko.observableArray(categories);
     self.selectedFilter = ko.observable(self.tags[3]);
     self.selectedLocation = ko.observable(undefined);
+    self.isHiddenContent = ko.observable(false);
 
     // BEHAVIOUR
     self.select = function(location) {
@@ -80,7 +81,15 @@ var LocationsViewModel = function() {
             updateMarkerVisibility(currentLocation.mapMarker, currentLocation.visible());
         }
     };
+
+    self.toggleTextContent = function() {
+        if(self.isHiddenContent())
+            self.isHiddenContent(false);
+        else self.isHiddenContent(true);
+    };
 };
 
 var viewModel = new LocationsViewModel();
 ko.applyBindings(viewModel);
+
+// TODO: check crossbrowsers

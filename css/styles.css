@@ -10,7 +10,7 @@ li.selected {
     background-color: #fed41c;
 }
 
-.text-content {
+.content {
     padding: 2em;
 }
 
@@ -38,3 +38,16 @@ header {
 .neighborhood {
     color: #fed41c;
 }
+
+@media (min-width: 767px) {
+    button.close {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .hide {
+        display: none;
+    }
+}
+

@@ -10,30 +10,40 @@
 <body>
 
     <div class="row">
-        <section class="col-sm-3 text-content">
+        <section class="col-sm-3 content">
+
+            <button type="button" class="close" aria-label="Close" data-bind="event: {click : toggleTextContent}"><span aria-hidden="true">&times;</span></button>
+
             <header>
                 <h4>Get to know</h4>
                 <h1 class="neighborhood">La Zona Colonial</h1>
-                <h4>in Santo Domingo,</h4>
-                <h4>Dominican Republic</h4>
+                <h4>in Santo Domingo, Dominican Republic</h4>
             </header>
-            <p>
-                One of the first cities to be ever built in America, La Zona Colonial
-                is now but a small neighborhood in the vibrant Caribbean city of Santo Domingo,
-                full with life and things to see*. Here are a few of the places recommended
-                by my sister:
-            </p>
 
-            <div class="form-group">
-                <em>Filter by: </em>
-                <select data-bind="options: tags, value: selectedFilter, event: { change: filter}" class="form-control"></select>
-            </div>
-            <ul data-bind="foreach: locations" class="locations-list">
-                <li data-bind="text: $data.name, visible: $data.visible,
+            <div id="text-conten" data-bind="css: {hide: isHiddenContent}">
+
+                <p>
+                    One of the first cities to be ever built in America, La Zona Colonial
+                    is now but a small neighborhood in the vibrant Caribbean city of Santo Domingo,
+                    full with life and things to see*. Here are a few of the places recommended
+                    by my sister:
+                </p>
+
+                <div class="form-group">
+                    <em>Filter by: </em>
+                    <select data-bind="options: tags, value: selectedFilter, event: { change: filter}" class="form-control"></select>
+                </div>
+
+                <ul data-bind="foreach: locations" class="locations-list">
+                    <li data-bind="text: $data.name, visible: $data.visible,
                    css: { selected: $data == $root.selectedLocation() },
                    click: $root.select" class="location-item"></li>
-            </ul>
+                </ul>
+
+            </div>
+
         </section>
+
         <section id="map" class="col-sm-9 map-content">
             MAP
         </section>
