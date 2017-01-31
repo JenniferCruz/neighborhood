@@ -66,7 +66,6 @@ var LocationsViewModel = function() {
             if (currentLocation.tags.includes(filterTag))
                 currentLocation.visible(true);
             else currentLocation.visible(false);
-            // updateMarkerVisibility(currentLocation, currentLocation.visible());
             updateMarkerVisibility(currentLocation.mapMarker, currentLocation.visible());
         }
     };

@@ -22,8 +22,8 @@ var loadMap = function() {
 };
 
 var updateMarkerVisibility = function(marker, visibility) {
-    // TODO: Filter map marker. Function called from filter
-    if(visibility) {
+    if(visibility)
+        marker.setMap(map);
+    else
         marker.setMap(null);
-    }
 };
