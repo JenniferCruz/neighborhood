@@ -25,12 +25,16 @@
                click: $root.select"></li>
         </ul>
     </section>
-    <section class="map-content">
+    <section id="map" class="map-content">
         MAP
     </section>
 
 
     <script src="js/lib/knockout-3.4.1.js"></script>
+    <script src="js/map.js"></script>
     <script src="js/app.js"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyA2WdAm_egMhv6ledFOuhHoNrWlMgDL1cc&callback=loadMap">
+    </script>
 </body>
 </html>

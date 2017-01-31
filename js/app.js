@@ -32,7 +32,9 @@ var Location = function(data) {
     var self = this;
     self.name = data.name;
     self.tags = data.tags;
+    self.location = data.location;
     self.visible = ko.observable(true);
+    self.mapMarker = null;
     return self;
 };
 
@@ -53,18 +55,31 @@ var LocationsViewModel = function() {
             self.selectedLocation('undefined');
         else
             self.selectedLocation(location);
+        // TODO: highlight corresponding marker on map
     };
 
     self.filter = function(vm, event) {
+        // TODO: filter map markers as well
         var filterTag = event.srcElement.value;
         for(var i = 0; i < self.locations().length; i++) {
             var currentLocation = self.locations()[i];
             if (currentLocation.tags.includes(filterTag))
                 currentLocation.visible(true);
             else currentLocation.visible(false);
+            // updateMarkerVisibility(currentLocation, currentLocation.visible());
+            updateMarkerVisibility(currentLocation.mapMarker, currentLocation.visible());
         }
     };
+
+    // self.getVisibleLocationsNames = function() {
+    //     var visibleLocs = [];
+    //     self.locations.forEach(function(currentLoc){
+    //         if(currentLoc().visible())
+    //             visibleLocs.push(currentLoc);
+    //     });
+    //     return visibleLocs;
+    // };
 };
 
-
-ko.applyBindings(new LocationsViewModel());
+var viewModel = new LocationsViewModel();
+ko.applyBindings(viewModel);
