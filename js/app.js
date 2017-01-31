@@ -26,23 +26,29 @@ var highlight = function() {
 
 };
 
-var Place = function(place) {
-    var self = this;
-    this.title = ko.observable(place.place);
-    this.location = ko.observable(place.location);
-    this.tags = ko.observableArray([]);
-    place.tags.forEach(function(tag){
-        self.tags.push(ko.observable(tag));
-    });
+var Location = function(place) {
+    // var self = this;
+    this.title = ko.observable(place.name);
+    // this.coords = ko.observable(place.location);
+    // this.tags = ko.observableArray([]);
+    // place.tags.forEach(function(tag){
+       // self.tags.push(ko.observable(tag));
+    // });
     return this;
 };
 
 var PlacesViewModel = function() {
     var self = this;
-    self.places = ko.observableArray([]);
-    locations.forEach(function(place) {
-        self.places.push(ko.observable(new Place(place)));
+    self.locations = ko.observableArray([]);
+    cityLocations.forEach(function(place) {
+        var p = ko.observable(new Location(place));
+        self.locations.push(p);
     });
+
+    var highlightItem = function(place) {
+        console.log('!');
+        console.log(place);
+    }
 };
 
 ko.applyBindings(new PlacesViewModel());
