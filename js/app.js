@@ -51,11 +51,14 @@ var LocationsViewModel = function() {
 
     // BEHAVIOUR
     self.select = function(location) {
-        if (location === self.selectedLocation())
-            self.selectedLocation('undefined');
-        else
-            self.selectedLocation(location);
         // TODO: highlight corresponding marker on map
+        if (location === self.selectedLocation()) {
+            self.selectedLocation('undefined');
+            quiteAnimatedMarker();
+        } else {
+            self.selectedLocation(location);
+            animateMarker(location.mapMarker);
+        }
     };
 
     self.filter = function(vm, event) {

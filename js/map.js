@@ -1,5 +1,6 @@
 var map;
 var markers = [];
+var animatedMarker = 'undefined';
 
 var loadMap = function() {
     // TODO: Load a 'Welcome to Santo Domingo" banner ontop of map, which disappears in a few seconds
@@ -16,7 +17,7 @@ var loadMap = function() {
         locations[i].mapMarker = mark;
         mark.addListener('click', function(){
             // TODO: Highlight marker and tell KO to highlight list
-            console.log('clicked marker!');
+            animateMarker(this);
         });
     }
 };
@@ -26,4 +27,15 @@ var updateMarkerVisibility = function(marker, visibility) {
         marker.setMap(map);
     else
         marker.setMap(null);
+};
+
+var quiteAnimatedMarker = function() {
+    if (animatedMarker !== 'undefined' && animatedMarker.getAnimation() !== null)
+        animatedMarker.setAnimation(null);
+};
+
+var animateMarker = function(marker) {
+    quiteAnimatedMarker();
+    animatedMarker = marker;
+    animatedMarker.setAnimation(google.maps.Animation.BOUNCE);
 };

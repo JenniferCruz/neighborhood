@@ -4,7 +4,7 @@ AS USER:
 -- I can also see those locations on a list
 -- I can see everything I need in a single page (single-page app)
 -- I can filter the locations through an input field OR a dropdown menu.
-- I see filtered locations' list items and markers on map update dynamically according to applied filter.
+-- I see filtered locations' list items and markers on map update dynamically according to applied filter.
 - I can see an animation (bounce, color-change, etc) on the correspondent marker when I click on a marker or a list item.
 - I can access the app from a desktop, tablet or mobile and see it nice in all devices.
 - I can see an adequate notification when something fails (ex.: google or any other third-party API doesn't load)
