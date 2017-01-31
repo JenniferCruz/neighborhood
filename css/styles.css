@@ -1,3 +1,20 @@
-html, body, #map {
+html, body, .map-content {
     height: 800px;
+}
+
+body {
+    background-color: lightblue;
+}
+
+li.selected {
+    color: red;
+}
+
+.text-content {
+    width: 25%;
+}
+
+.map-content {
+    width: 72%;
+    background-color: lightslategrey;
 }

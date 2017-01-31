@@ -2,26 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Neighborhood App: Zona Colonial in Santo Domingo</title>
-    <link rel="stylesheet" href="css/styles.css" type="text/css">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-    <div>
-        <select>
-            <option>open now</option>
-        </select>
+    <section class="text-content">
+        <h1>My neighborhood</h1>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Pellentesque condimentum ultrices tortor, quis ornare dui elementum vel.
+            Fusce nunc metus, mattis non vestibulum id, ultricies at orci.
+            Vivamus faucibus vitae erat bibendum porttitor.
+        </p>
+
+        <em>Filter by: </em>
+        <select data-bind="options: tags, value: selectedFilter, event: { change: filter}"></select>
+
         <ul data-bind="foreach: locations">
-            <li data-bind="click: $root.highlightItem, text: $data.title"></li>
+            <li data-bind="text: $data.name, visible: $data.visible,
+               css: { selected: $data == $root.selectedLocation() },
+               click: $root.select"></li>
         </ul>
-    </div>
-    <!--<div id="map"></div>-->
+    </section>
+    <section class="map-content">
+        MAP
+    </section>
+
 
     <script src="js/lib/knockout-3.4.1.js"></script>
-    <script src="js/locations.js"></script>
     <script src="js/app.js"></script>
-    <!--<script async defer-->
-            <!--src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyA2WdAm_egMhv6ledFOuhHoNrWlMgDL1cc&callback=loadMap">-->
-    <!--</script>-->
 </body>
 </html>
