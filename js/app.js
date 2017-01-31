@@ -61,6 +61,16 @@ var LocationsViewModel = function() {
         }
     };
 
+    self.highlightLocationInList = function (name) {
+        for(var i = 0; i < self.locations().length; i++) {
+            if(self.locations()[i].name === name) {
+                console.log();
+                self.select(self.locations()[i]);
+                break;
+            }
+        }
+    };
+
     self.filter = function(vm, event) {
         // TODO: filter map markers as well
         var filterTag = event.srcElement.value;

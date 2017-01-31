@@ -15,9 +15,11 @@ var loadMap = function() {
         var mark = new google.maps.Marker({ position : locations[i].location, map : map, title : locations[i].name});
         // markers.push(mark);
         locations[i].mapMarker = mark;
+
         mark.addListener('click', function(){
             // TODO: Highlight marker and tell KO to highlight list
             animateMarker(this);
+            viewModel.highlightLocationInList(this.title);
         });
     }
 };
