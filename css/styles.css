@@ -39,8 +39,15 @@ header {
     color: #fed41c;
 }
 
+.caret {
+    float: right;
+
+}
+
+
 @media (min-width: 767px) {
-    button.close {
+    button.close,
+    .caret {
         display: none;
     }
 }
@@ -48,6 +55,19 @@ header {
 @media (max-width: 767px) {
     .hide {
         display: none;
+    }
+
+    header h4 {
+        /*font-size: 1em;*/
+        margin-top: 0;
+    }
+
+    header h1 {
+        margin: 0;
+    }
+
+    section.content {
+        padding-bottom: 10px;
     }
 }
 

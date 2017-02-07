@@ -12,7 +12,8 @@
     <div class="row">
         <section class="col-sm-3 content">
 
-            <button type="button" class="close" aria-label="Close" data-bind="event: {click : toggleTextContent}"><span aria-hidden="true">&times;</span></button>
+            <button type="button" class="close" aria-label="Close" data-bind="event: {click : hideTextContent}, visible: !isHiddenContent() && windowIsSmall()"><span aria-hidden="true">&times;</span></button>
+            <span class="caret" data-bind="event: {click : showTextContent}, visible: isHiddenContent() &&  windowIsSmall()"></span>
 
             <header>
                 <h4>Get to know</h4>
@@ -20,7 +21,7 @@
                 <h4>in Santo Domingo, Dominican Republic</h4>
             </header>
 
-            <div id="text-conten" data-bind="css: {hide: isHiddenContent}">
+            <div id="text-content" data-bind="visible: !windowIsSmall() || !isHiddenContent() ">
 
                 <p>
                     One of the first cities to be ever built in America, La Zona Colonial
@@ -53,7 +54,9 @@
         <p>Credits or something here :P</p>
     </footer>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="js/lib/knockout-3.4.1.js"></script>
+    <script src="js/content.js"></script>
     <script src="js/map.js"></script>
     <script src="js/app.js"></script>
     <script async defer

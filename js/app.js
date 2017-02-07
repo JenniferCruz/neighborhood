@@ -1,33 +1,4 @@
-// PLAIN INFO
-var cityLocations = [];
-var categories = ['all', 'urban sight', 'street', 'route', 'architecture', 'food', 'store', 'museum', 'things to do', 'restaurant', 'dance', 'salsa', 'son', 'nightlife'];
-cityLocations.push({
-    name : 'Calle Las Damas',
-    location : {lat: 18.47317, lng: -69.882598},
-    tags : [categories[1], categories[2], categories[3], categories[0]]
-});
-cityLocations.push({
-    name : 'Chocomuseo',
-    location : {lat: 18.473665, lng: -69.884687},
-    tags : [categories[5], categories[6], categories[7],categories[8], categories[0]]
-});
-cityLocations.push({
-    name : 'La cafetera',
-    location : {lat : 18.473219, lng : -69.886549},
-    tags : [categories[9], categories[5], categories[0]]
-});
-cityLocations.push({
-    name : 'El bar de Lucia',
-    location : {lat : 18.473889, lng : -69.88527},
-    tags : [categories[5], categories[9], categories[10], categories[11], categories[12], categories[13], categories[0]]
-});
-cityLocations.push({
-    name : 'Jalao\'',
-    location : {lat : 18.473827, lng : -69.883973},
-    tags : [categories[5], categories[9], categories[0]]
-});
-
-// OBJECT - Seems unnecessary - might need to DRY it out... let's see how this evolves..
+// LOCATION OBJECT CONSTRUCTOR
 var Location = function(data) {
     var self = this;
     self.name = data.name;
@@ -43,12 +14,16 @@ var LocationsViewModel = function() {
     // DATA
     var self = this;
     self.locations = new ko.observableArray([]);
-    cityLocations.forEach(function(location){self.locations.push(new Location(location));});
+
+    cityLocations.forEach(function(location) {
+        self.locations.push(new Location(location));
+    });
 
     self.tags = ko.observableArray(categories);
     self.selectedFilter = ko.observable(self.tags[3]);
     self.selectedLocation = ko.observable(undefined);
-    self.isHiddenContent = ko.observable(false);
+    self.windowWidth = ko.observable($(window).width());
+    self.isHiddenContent = ko.observable(self.windowWidth() < 767); // TODO: repeated magic number
 
     // BEHAVIOUR
     self.select = function(location) {
@@ -82,14 +57,38 @@ var LocationsViewModel = function() {
         }
     };
 
-    self.toggleTextContent = function() {
-        if(self.isHiddenContent())
-            self.isHiddenContent(false);
-        else self.isHiddenContent(true);
+    // self.toggleTextContent = function(model, event) {
+    //     if(self.isHiddenContent())
+    //         self.isHiddenContent(false);
+    //     else self.isHiddenContent(true);
+    //     // console.log(self.isHiddenContent());
+    // };
+
+    self.hideTextContent = function() {
+        self.isHiddenContent(true);
     };
+
+    self.showTextContent = function() {
+        self.isHiddenContent(false);
+    };
+
+    self.windowIsSmall = function() {
+        // TODO: is this magic number your size?s
+        return self.windowWidth() < 767;
+    };
+
 };
 
 var viewModel = new LocationsViewModel();
 ko.applyBindings(viewModel);
 
 // TODO: check crossbrowsers
+// TODO: Take only used portions of bootstrap
+// TODO: Bug with text-content section remaining hidden when resizing
+
+
+$(window).resize(function(){
+    // inspiration from
+    // http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
+    viewModel.windowWidth($(window).width());
+});
