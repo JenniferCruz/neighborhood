@@ -11,6 +11,8 @@ var Location = function(data) {
 
 // VIEW MODEL
 var LocationsViewModel = function() {
+    const windowWidthTreshold = 767;
+
     // DATA
     var self = this;
     self.locations = new ko.observableArray([]);
@@ -23,11 +25,10 @@ var LocationsViewModel = function() {
     self.selectedFilter = ko.observable(self.tags[3]);
     self.selectedLocation = ko.observable(undefined);
     self.windowWidth = ko.observable($(window).width());
-    self.isHiddenContent = ko.observable(self.windowWidth() < 767); // TODO: repeated magic number
+    self.isHiddenContent = ko.observable(self.windowWidth() < windowWidthTreshold);
 
     // BEHAVIOUR
     self.select = function(location) {
-        // TODO: highlight corresponding marker on map
         if (location === self.selectedLocation()) {
             self.selectedLocation('undefined');
             quiteAnimatedMarker();
@@ -73,8 +74,7 @@ var LocationsViewModel = function() {
     };
 
     self.windowIsSmall = function() {
-        // TODO: is this magic number your size?s
-        return self.windowWidth() < 767;
+        return self.windowWidth() < windowWidthTreshold;
     };
 
 };
@@ -84,7 +84,6 @@ ko.applyBindings(viewModel);
 
 // TODO: check crossbrowsers
 // TODO: Take only used portions of bootstrap
-// TODO: Bug with text-content section remaining hidden when resizing
 
 
 $(window).resize(function(){
