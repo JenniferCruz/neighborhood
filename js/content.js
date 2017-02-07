@@ -1,3 +1,4 @@
+// TODO: Is this the right place for all those variables?
 var map;
 var markers = [];
 var animatedMarker = 'undefined';

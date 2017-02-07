@@ -7,6 +7,7 @@ var loadMap = function() {
         styles : mapStyles
     });
 
+    var infoWindow = new google.maps.InfoWindow();
     var locations = viewModel.locations();
     for(var i = 0; i < locations.length; i++) {
         var mark = new google.maps.Marker({ position : locations[i].location, map : map, title : locations[i].name});
@@ -16,9 +17,11 @@ var loadMap = function() {
         mark.addListener('click', function(){
             // TODO: Highlight marker and tell KO to highlight list
             animateMarker(this);
+            populateInfoWindow(this, infoWindow);
             viewModel.highlightLocationInList(this.title);
         });
     }
+
 };
 
 var updateMarkerVisibility = function(marker, visibility) {
@@ -37,4 +40,12 @@ var animateMarker = function(marker) {
     quiteAnimatedMarker();
     animatedMarker = marker;
     animatedMarker.setAnimation(google.maps.Animation.BOUNCE);
+};
+
+var populateInfoWindow = function(marker, infoWindow) {
+    if (infoWindow.marker != marker) {
+        infoWindow.marker = marker;
+        infoWindow.setContent('<div>' + marker.title + '</div>');
+        infoWindow.open(map, marker);
+    }
 };
