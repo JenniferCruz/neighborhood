@@ -24,7 +24,7 @@ var LocationsViewModel = function() {
     self.tags = ko.observableArray(categories);
     self.selectedFilter = ko.observable(self.tags[3]);
     self.selectedLocation = ko.observable(undefined);
-    self.windowWidth = ko.observable($(window).width());
+    self.windowWidth = ko.observable(window.innerWidth);
     self.isHiddenContent = ko.observable(self.windowWidth() < windowWidthTreshold);
 
     // BEHAVIOUR
@@ -85,9 +85,9 @@ ko.applyBindings(viewModel);
 // TODO: check crossbrowsers
 // TODO: Take only used portions of bootstrap
 
-
-$(window).resize(function(){
+// TODO: Fix Bug with resizing and caret
+window.resize = function(){
     // inspiration from
     // http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
-    viewModel.windowWidth($(window).width());
-});
+    viewModel.windowWidth(window.innerWidth);
+};
