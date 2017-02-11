@@ -48,8 +48,8 @@ var LocationsViewModel = function() {
         }
     };
 
-    self.filter = function(vm, event) {
-        var filterTag = event.srcElement.value;
+    self.filter = function(vm) {
+        var filterTag = vm.selectedFilter();
         for(var i = 0; i < self.locations().length; i++) {
             var currentLocation = self.locations()[i];
             if (currentLocation.tags.includes(filterTag))
