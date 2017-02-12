@@ -1,9 +1,10 @@
 var cityLocations = [];
-
+// TODO: Update clients categories listing
+// TODO: Add more locations
 cityLocations.push({
     name : 'Calle Las Damas',
     location : {lat: 18.47317, lng: -69.882598},
-    tags : ['urban sight', 'street', 'route', 'architecture']
+    tags : ['urban sight', 'street', 'route', 'outdoors']
 });
 cityLocations.push({
     name : 'Chocomuseo',

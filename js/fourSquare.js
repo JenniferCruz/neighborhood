@@ -26,7 +26,10 @@ var fourSqr = {
             });
     },
     requestPhotosFor: function (venueID) {
-        $.get(this.genPhotoRequestURL(venueID), this.handlePhotoResponse);
+        var self = this;
+        $.get(this.genPhotoRequestURL(venueID), function(data, status) {
+            self.handlePhotoResponse(data, status);
+        });
     },
     handleVenueResponse: function(data, status) {
         if(status === "success") {
@@ -36,6 +39,7 @@ var fourSqr = {
                 if(venues[i].id === this.currentID) {
                     isInResponse = true;
                     this.generateVenueHTML(venues[i]);
+                    this.requestPhotosFor(this.currentID);
                     break;
                 }
             }
@@ -50,24 +54,33 @@ var fourSqr = {
     },
     handlePhotoResponse: function(data, status) {
         if(status === "success") {
-            console.log('received photo data');
-            console.log(data);
+            var photos = data.response.photos.items;
+            if(photos.length > 0) {
+                var img = venueHTML.img.replace('#PREFIX#', photos[0].prefix).replace('#SUFFIX#', photos[0].suffix);
+                this.HTMLStr = this.HTMLStr.replace('#IMG#', img);
+            } else {
+                this.HTMLStr = this.HTMLStr.replace('#IMG#', '');
+            }
         } else {
             console.log("ops! Something went wrong retrieving pics: " + status);
         }
+
+        this.clientMethod(this.HTMLStr);
     },
     generateVenueHTML: function(venue) {
         if(venue) {
-            this.HTMLStr = '<h3 class="info-venue-title">' + venue.name + '</h3>';
+            this.HTMLStr = venueHTML.header.replace('#NAME#', venue.name);
+            this.HTMLStr += '#IMG#';
             if(venue.contact.phone)
-                this.HTMLStr += '<p class="info-venue-content"><strong>Phone</strong>: ' + venue.contact.phone + '</p>';
+                this.HTMLStr += venueHTML.phone.replace('#PHONE#', venue.contact.phone);
             if(venue.location.address)
-                this.HTMLStr += '<p class="info-venue-content"><strong>Address</strong>: ' + venue.location.address + '</p>';
-            this.HTMLStr += '<a href="' + 'https://foursquare.com/v/' + venue.id + '?ref=' + this.clientID + '" target="_blank" class="info-venue-content">Checkout more at FourSquare></a>'
+                this.HTMLStr += venueHTML.address.replace('#ADDRESS#', venue.location.address);
+            this.HTMLStr += venueHTML.fourSqrLink.replace('#ID#', venue.id);
         } else {
             this.HTMLStr = '<p>Ops! We could\'n find more info about this place!</p>';
+            this.clientMethod(this.HTMLStr);
         }
-        this.clientMethod(this.HTMLStr);
+        // this.clientMethod(this.HTMLStr);
     },
     setVenueContent: function(id, name, callback) {
         this.clientMethod = callback;
@@ -78,27 +91,13 @@ var fourSqr = {
 
 };
 
-// TODO: Will you use this?
-var infoWindowHTMLContent = '<h3 class="info-venue-title">' + '#VENUENAME#' + '</h3>' +
-    '<img src="' + '#VENUEPREFIX#' + '180' + '#VENUESUFFIX#' +'">' +
-    '<p class="info-venue-content"><strong>Phone</strong>: ' + '#VENUEPHONE#' + '</p>' +
-    '<p class="info-venue-content"><strong>Address</strong>: ' + '#VENUEADDRESS#' + '</p>' +
-    '<a href="' + '#VENUEREFURL#' + '" class="info-venue-content">Checkout more at FourSquare></a>' + '<hr>' +
-    '<p class="info-options-teaser">Nearby? You might be interested in similar venues:</p> ' + '<div class="info-alt-options">' +
-
-    '<div class="info-option"><a href="' + '#FIRSTVENUEURL#' + '">' +
-    '<img src="' + '#FIRSTVENUEPREFIX#' + '50' + '#FIRSTVENUESUFFIX#' + '">' +
-    '<h4>' + '#FIRSTVENUENAME#' + '</h4></a></div>' +
-
-    '<div class="info-option"><a href="' + '#SECONDVENUEURL#' + '">' +
-    '<img src="' + '#SECONDVENUEPREFIX#' + '50' + '#SECONDVENUESUFFIX#' + '">' +
-    '<h4>' + '#SECONDVENUENAME#' + '</h4></a></div>' +
-
-    '<div class="info-option"><a href="' + '#THIRDVENUEURL#' + '">' +
-    '<img src="' + '#THIRDVENUEPREFIX#' + '50' + '#THIRDVENUESUFFIX#' + '">' +
-    '<h4>' + '#THIRDVENUENAME#' + '</h4></a></div>' +
-
-    '</div> </div>';
+var venueHTML = {
+    header: '<h3 class="info-venue-title">' + '#NAME#' + '</h3>',
+    img: '<img src="' + '#PREFIX#' + '180' + '#SUFFIX#' +'">',
+    phone: '<p class="info-venue-content"><strong>Phone</strong>: ' + '#PHONE#' + '</p>',
+    address: '<p class="info-venue-content"><strong>Address</strong>: ' + '#ADDRESS#' + '</p>',
+    fourSqrLink:  '<p><a href="' + 'https://foursquare.com/v/' + '#ID#' + '?ref=' + fourSqr.clientID + '" target="_blank" class="info-venue-content">Checkout more at FourSquare></a></p>'
+};
 
 // TODO: Maybe create a small gallery
 // TODO: Consider filtering by data.response.photos.items[i].visibility === 'public'
