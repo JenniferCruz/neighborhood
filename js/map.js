@@ -15,7 +15,7 @@ var map = {
 
         }
     },
-    onMarkerClick : function (marker, locationID) {
+    onMarkerClick : function (marker, locationID, caller) {
         // Quite the currently animated marker, if any
         var markerAnimation = marker.getAnimation();
         if (this._currentAnimatedMarker !== 'undefined')
@@ -26,18 +26,21 @@ var map = {
         } else {
             marker.setAnimation(google.maps.Animation.BOUNCE); // TODO: Cooler animation
             this._populateInfoWindow(marker, locationID);
-            // viewModel.onItemClick(marker.title, 'map'); // (locationName, clickSrc) // TODO: Inform viewModel
         }
-
-
+        // avoid circular reference
+        if (caller !== viewModel)
+            viewModel.highlightItem(marker.title, map);
     },
-    showAndHideMarkers : function (wrappedMarkers) {
-        for (var i = 0; i < wrappedMarkers.length; i++) {
-            if (wrappedMarkers[1])
-                wrappedMarkers[0].setMap(this.chart);
-            else
-                wrappedMarkers[0].setMap(null);
-        }
+    showMarkers : function (markers) {
+        var m = this.chart;
+        markers.forEach(function (marker) {
+            marker.setMap(m);
+        });
+    },
+    hideMarkers : function (markers) {
+        markers.forEach(function (marker) {
+            marker.setMap(null);
+        });
     }
 };
 

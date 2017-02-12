@@ -39,34 +39,44 @@ var LocationsViewModel = function() {
         }
     };
 
-    self.select = function(location) {
-        if (location === self.selectedLocation()) {
+    self.onItemClick = function (location, caller) {
+        if (location === self.selectedLocation())
             self.selectedLocation('undefined');
-            quiteAnimatedMarker(); //<
-        } else {
+        else
             self.selectedLocation(location);
-            animateMarker(location.mapMarker); //<
+        // avoid circular reference
+        if (caller !== map)
+            map.onMarkerClick(location.mapMarker, location.fourSqrID, viewModel);
+    };
+
+    self.highlightItem = function (locationName, caller) {
+        for (var i = 0; i < self.locations().length; i++) {
+            if (self.locations()[i].name === locationName) {
+                self.onItemClick(self.locations()[i], caller);
+                break;
+            }
         }
     };
 
-    self.filter = function(vm) { // TODO: Rename to make clear is input
+    self.filter = function (vm) {
+        // TODO: Rename to make clear is input
         var filterTag = vm.selectedFilter();
-        for(var i = 0; i < self.locations().length; i++) {
+        var markersToShow = [];
+        var markersToHide = [];
+        for (var i = 0; i < self.locations().length; i++) {
             var currentLocation = self.locations()[i];
-            if (currentLocation.tags.includes(filterTag))
+            if (currentLocation.tags.includes(filterTag)) {
                 currentLocation.visible(true);
-            else currentLocation.visible(false);
-            updateMarkerVisibility(currentLocation.mapMarker, currentLocation.visible()); //<
+                markersToShow.push(currentLocation.mapMarker);
+            }
+            else {
+                currentLocation.visible(false);
+                markersToHide.push(currentLocation.mapMarker);
+            }
         }
+        map.showMarkers(markersToShow);
+        map.hideMarkers(markersToHide);
     };
-
-    // self.toggleTextContent = function(model, event) {
-    //     if(self.isHiddenContent())
-    //         self.isHiddenContent(false);
-    //     else self.isHiddenContent(true);
-    //     // console.log(self.isHiddenContent());
-    // };
-
     self.hideTextContent = function() {
         self.isHiddenContent(true);
     };

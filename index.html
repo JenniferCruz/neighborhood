@@ -40,7 +40,7 @@
                 <ul data-bind="foreach: locations" class="locations-list">
                     <li data-bind="text: $data.name, visible: $data.visible,
                    css: { selected: $data == $root.selectedLocation() },
-                   click: $root.select" class="location-item"></li>
+                   click: $root.onItemClick" class="location-item"></li>
                 </ul>
 
             </div>
