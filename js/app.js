@@ -6,6 +6,7 @@ var Location = function(data) {
     self.location = data.location;
     self.visible = ko.observable(true);
     self.mapMarker = null;
+    self.fourSqrID = data.fourSqrID;
     return self;
 };
 

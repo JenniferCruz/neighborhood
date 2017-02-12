@@ -6,9 +6,9 @@ AS USER:
 -- I can filter the locations through an input field OR a dropdown menu.
 -- I see filtered locations' list items and markers on map update dynamically according to applied filter.
 -- I can see an animation (bounce, color-change, etc) on the correspondent marker when I click on a marker or a list item.
-- I can see an adequate notification when something fails (ex.: google or any other third-party API doesn't load)
 - I can click on a marker OR a list-item to see info from a third-party API (flickr imgs, yelp, wikipedia, etc. -Not from Google libraries-) in an infoWindow
 - I can access the app from a desktop, tablet or mobile and see it nice in all devices.
+- I can see an adequate notification when something fails (ex.: google or any other third-party API doesn't load)
 
 
 AS APP:

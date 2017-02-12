@@ -1,6 +1,8 @@
 var loadMap = function() {
     // TODO: Load a 'Welcome to Santo Domingo" banner ontop of map, which disappears in a few seconds
     // TODO: Recenter map to show all markers on screen
+
+    // Why is map a global variable?
     map = new google.maps.Map(document.getElementById('map'), {
         center : {lat: 18.4726498, lng: -69.8865431},
         zoom : 17,
@@ -8,22 +10,29 @@ var loadMap = function() {
     });
 
     var infoWindow = new google.maps.InfoWindow();
+
+    // Update each location to have its own marker
     var locations = viewModel.locations();
     for(var i = 0; i < locations.length; i++) {
-        var mark = new google.maps.Marker({ position : locations[i].location, map : map, title : locations[i].name});
-        // markers.push(mark);
-        locations[i].mapMarker = mark;
+        var loc = locations[i];
+        var mark = new google.maps.Marker({ position : loc.location, map : map, title : loc.name});
 
-        mark.addListener('click', function(){
-            // TODO: Highlight marker and tell KO to highlight list
-            animateMarker(this);
-            populateInfoWindow(this, infoWindow);
-            viewModel.highlightLocationInList(this.title);
-        });
+        loc.mapMarker = mark;
+
+        mark.addListener('click', handleClickedMarker(mark, infoWindow, loc));
     }
 
 };
 
+var handleClickedMarker = function(marker, infoWindow, location) {
+    return function(){
+        animateMarker(marker);
+        populateInfoWindow(marker, infoWindow, location.fourSqrID);
+        viewModel.highlightLocationInList(marker.title);
+    };
+};
+
+// use when filtering locations
 var updateMarkerVisibility = function(marker, visibility) {
     if(visibility)
         marker.setMap(map);
@@ -42,10 +51,13 @@ var animateMarker = function(marker) {
     animatedMarker.setAnimation(google.maps.Animation.BOUNCE);
 };
 
-var populateInfoWindow = function(marker, infoWindow) {
+var populateInfoWindow = function(marker, infoWindow, fourSqrID) {
     if (infoWindow.marker != marker) {
         infoWindow.marker = marker;
-        infoWindow.setContent('<div>' + marker.title + '</div>');
-        infoWindow.open(map, marker);
+        fourSqr.setVenueContent(fourSqrID, marker.title, function(html){
+            infoWindow.setContent(html);
+            infoWindow.open(map, marker);
+        });
+
     }
 };
