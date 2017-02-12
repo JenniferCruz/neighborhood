@@ -30,11 +30,13 @@
                     by my sister:
                 </p>
 
+                <!-- FILTER -->
                 <div class="form-group">
                     <em>Filter by: </em>
                     <select data-bind="options: tags, value: selectedFilter, event: { change: filter}" class="form-control"></select>
                 </div>
 
+                <!--GENERATE LOCATION LISTING -->
                 <ul data-bind="foreach: locations" class="locations-list">
                     <li data-bind="text: $data.name, visible: $data.visible,
                    css: { selected: $data == $root.selectedLocation() },
@@ -46,7 +48,7 @@
         </section>
 
         <section id="map" class="col-sm-9 map-content">
-            MAP
+            <!--TODO: Handle is map is not loaded-->
         </section>
     </div>
     <footer class="container-fluid">

@@ -18,21 +18,6 @@ var fourSqr = {
             + this._clientID + "&client_secret=" + this._clientSecret + "&" + "v=" + this._APIVersionDate
             + "&ll=18.4726498,-69.8865431&query=" + query;
     },
-    _requestVenue: function(query) {
-        // make AJAX venue request to Foursquare.
-        var self = this;
-        $.get(this._genVenueRequestURL(query),
-            function(data, status){
-                self._handleVenueResponse(data, status);
-            });
-    },
-    _requestPhotosFor: function (venueID) {
-        // make AJAX photo request to Foursquare
-        var self = this;
-        $.get(this._genPhotoRequestURL(venueID), function(data, status) {
-            self._handlePhotoResponse(data, status);
-        });
-    },
     _handleVenueResponse: function(data, status) {
         // called from _requestVenue callback
         if(status === "success") {
@@ -54,6 +39,21 @@ var fourSqr = {
             console.log(status);
         }
 
+    },
+    _requestVenue: function(query) {
+        // make AJAX venue request to Foursquare.
+        var self = this;
+        $.get(this._genVenueRequestURL(query),
+            function(data, status){
+                self._handleVenueResponse(data, status);
+            });
+    },
+    _requestPhotosFor: function (venueID) {
+        // make AJAX photo request to Foursquare
+        var self = this;
+        $.get(this._genPhotoRequestURL(venueID), function(data, status) {
+            self._handlePhotoResponse(data, status);
+        });
     },
     _handlePhotoResponse: function(data, status) {
         // called from _requestPhotosFor callback

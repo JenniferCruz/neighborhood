@@ -24,23 +24,13 @@ var LocationsViewModel = function() {
 
     self.tags = ko.observableArray(categories);
     self.selectedFilter = ko.observable(self.tags[3]);
+
     self.selectedLocation = ko.observable(undefined);
-    // self.windowWidth = ko.observable();
     self.windowWidth = ko.observable(window.innerWidth);
     self.isHiddenContent = ko.observable(self.windowWidth() < windowWidthTreshold);
 
     // BEHAVIOUR
-    self.select = function(location) {
-        if (location === self.selectedLocation()) {
-            self.selectedLocation('undefined');
-            quiteAnimatedMarker();
-        } else {
-            self.selectedLocation(location);
-            animateMarker(location.mapMarker);
-        }
-    };
-
-    self.highlightLocationInList = function (name) {
+    self.highlightLocationInList = function (name) { // TODO: rename something like handleHTMLSelectChange
         for(var i = 0; i < self.locations().length; i++) {
             if(self.locations()[i].name === name) {
                 self.select(self.locations()[i]);
@@ -49,14 +39,24 @@ var LocationsViewModel = function() {
         }
     };
 
-    self.filter = function(vm) {
+    self.select = function(location) {
+        if (location === self.selectedLocation()) {
+            self.selectedLocation('undefined');
+            quiteAnimatedMarker(); //<
+        } else {
+            self.selectedLocation(location);
+            animateMarker(location.mapMarker); //<
+        }
+    };
+
+    self.filter = function(vm) { // TODO: Rename to make clear is input
         var filterTag = vm.selectedFilter();
         for(var i = 0; i < self.locations().length; i++) {
             var currentLocation = self.locations()[i];
             if (currentLocation.tags.includes(filterTag))
                 currentLocation.visible(true);
             else currentLocation.visible(false);
-            updateMarkerVisibility(currentLocation.mapMarker, currentLocation.visible());
+            updateMarkerVisibility(currentLocation.mapMarker, currentLocation.visible()); //<
         }
     };
 
