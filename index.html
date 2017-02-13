@@ -12,8 +12,8 @@
     <div class="row">
         <section class="col-sm-3 content">
 
-            <button type="button" class="close" aria-label="Close" data-bind="event: {click : hideTextContent}, visible: !isHiddenContent() && windowIsSmall()"><span aria-hidden="true">&times;</span></button>
-            <span class="caret" data-bind="event: {click : showTextContent}, visible: isHiddenContent() &&  windowIsSmall()"></span>
+            <button type="button" class="close" aria-label="Close" data-bind="event: {click : hideFilterSection}, visible: !isSectionHidden() && windowIsSmall()"><span aria-hidden="true">&times;</span></button>
+            <span class="caret" data-bind="event: {click : showFilterSection}, visible: isSectionHidden() &&  windowIsSmall()"></span>
 
             <header>
                 <h4>Get to know</h4>
@@ -21,7 +21,7 @@
                 <h4>in Santo Domingo, Dominican Republic</h4>
             </header>
 
-            <div id="text-content" data-bind="visible: !windowIsSmall() || !isHiddenContent() ">
+            <div id="text-content" data-bind="visible: !windowIsSmall() || !isSectionHidden() ">
 
                 <p>
                     One of the first cities to be ever built in America, La Zona Colonial
@@ -33,7 +33,7 @@
                 <!-- FILTER -->
                 <div class="form-group">
                     <em>Filter by: </em>
-                    <select data-bind="options: tags, value: selectedFilter, event: { change: filter}" class="form-control"></select>
+                    <select data-bind="options: tags, value: selectedFilter, event: { change: onFilter}" class="form-control"></select>
                 </div>
 
                 <!--GENERATE LOCATION LISTING -->

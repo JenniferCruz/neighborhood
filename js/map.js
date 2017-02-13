@@ -7,15 +7,13 @@ var map = {
             this.infoWindow.marker = marker;
             this.infoWindow.setContent('<p>Loading info for ' + marker.title + ' </p>');
             this.infoWindow.open(map, marker);
-
-            // fourSqr.setVenueContent(locationID, marker.title, function(html){
-            //     this.infoWindow.setContent(html);
-            //     this.infoWindow.open(map, marker);
-            // });
-
+            fourSqr.setVenueContent(locationID, marker.title, function (html) {
+                map.infoWindow.setContent(html);
+                map.infoWindow.open(map, marker);
+            });
         }
     },
-    onMarkerClick : function (marker, locationID, caller) {
+    onMarkerClick : function (marker, location, caller) {
         // Quite the currently animated marker, if any
         var markerAnimation = marker.getAnimation();
         if (this._currentAnimatedMarker !== 'undefined')
@@ -25,11 +23,11 @@ var map = {
             marker.setAnimation(null);
         } else {
             marker.setAnimation(google.maps.Animation.BOUNCE); // TODO: Cooler animation
-            this._populateInfoWindow(marker, locationID);
+            this._populateInfoWindow(marker, location.fourSqrID);
         }
         // avoid circular reference
         if (caller !== viewModel)
-            viewModel.highlightItem(marker.title, map);
+            viewModel.onItemClick(location, map);
     },
     showMarkers : function (markers) {
         var m = this.chart;
@@ -49,14 +47,14 @@ var map = {
 var loadMap = function () {
     map.chart = new google.maps.Map(document.getElementById('map'), {
         center : {lat: 18.4726498, lng: -69.8865431},
-        zoom : 17
-        // styles : mapStyles
+        zoom : 17,
+        styles : mapStyles
     });
 
     map.infoWindow = new google.maps.InfoWindow();
 
     var addMarkerClicklistener = function (marker, location) {
-        return function() {
+        return function () {
             map.onMarkerClick(marker, location);
         }
     };

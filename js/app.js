@@ -1,5 +1,5 @@
 // LOCATION OBJECT CONSTRUCTOR
-var Location = function(data) {
+var Location = function (data) {
     var self = this;
     self.name = data.name;
     self.tags = data.tags;
@@ -11,14 +11,14 @@ var Location = function(data) {
 };
 
 // VIEW MODEL
-var LocationsViewModel = function() {
+var LocationsViewModel = function () {
     const windowWidthTreshold = 767;
 
     // DATA
     var self = this;
     self.locations = new ko.observableArray([]);
 
-    cityLocations.forEach(function(location) {
+    cityLocations.forEach(function (location) {
         self.locations.push(new Location(location));
     });
 
@@ -27,18 +27,9 @@ var LocationsViewModel = function() {
 
     self.selectedLocation = ko.observable(undefined);
     self.windowWidth = ko.observable(window.innerWidth);
-    self.isHiddenContent = ko.observable(self.windowWidth() < windowWidthTreshold);
+    self.isSectionHidden = ko.observable(self.windowWidth() < windowWidthTreshold);
 
     // BEHAVIOUR
-    self.highlightLocationInList = function (name) { // TODO: rename something like handleHTMLSelectChange
-        for(var i = 0; i < self.locations().length; i++) {
-            if(self.locations()[i].name === name) {
-                self.select(self.locations()[i]);
-                break;
-            }
-        }
-    };
-
     self.onItemClick = function (location, caller) {
         if (location === self.selectedLocation())
             self.selectedLocation('undefined');
@@ -46,20 +37,10 @@ var LocationsViewModel = function() {
             self.selectedLocation(location);
         // avoid circular reference
         if (caller !== map)
-            map.onMarkerClick(location.mapMarker, location.fourSqrID, viewModel);
+            map.onMarkerClick(location.mapMarker, location, viewModel);
     };
 
-    self.highlightItem = function (locationName, caller) {
-        for (var i = 0; i < self.locations().length; i++) {
-            if (self.locations()[i].name === locationName) {
-                self.onItemClick(self.locations()[i], caller);
-                break;
-            }
-        }
-    };
-
-    self.filter = function (vm) {
-        // TODO: Rename to make clear is input
+    self.onFilter = function (vm) {
         var filterTag = vm.selectedFilter();
         var markersToShow = [];
         var markersToHide = [];
@@ -77,15 +58,16 @@ var LocationsViewModel = function() {
         map.showMarkers(markersToShow);
         map.hideMarkers(markersToHide);
     };
-    self.hideTextContent = function() {
-        self.isHiddenContent(true);
+
+    self.hideFilterSection = function () {
+        self.isSectionHidden(true);
     };
 
-    self.showTextContent = function() {
-        self.isHiddenContent(false);
+    self.showFilterSection = function () {
+        self.isSectionHidden(false);
     };
 
-    self.windowIsSmall = function() {
+    self.windowIsSmall = function () {
         return self.windowWidth() < windowWidthTreshold;
     };
 
@@ -97,7 +79,7 @@ ko.applyBindings(viewModel);
 // TODO: check crossbrowsers
 // TODO: Take only used portions of bootstrap
 
-window.onresize = function(){
+window.onresize = function (){
     // inspiration from
     // http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
     viewModel.windowWidth(window.innerWidth);
