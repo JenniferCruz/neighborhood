@@ -1,106 +1,124 @@
 // TODO: How can I hide sensitive data?
 // TODO: Credit FourSquare
+
 var fourSqr = {
+    setVenueContent: function(query, id, callback) {
+        // Create new Handler and Template to avoid a race condition
+        new Handler(new TemplateAssembler())
+            .resolve(query, id, callback);
+    }
+};
+
+
+var Handler = function (template) {
+
+    const obj = {};
+
+    obj._template = template;
+
+    obj._photo = function (url, callback) {
+        $.get(url, function (data, status) {
+            if (status === 'success' && data.response.photos.items.length > 0)
+                template.setPhotoHTML(data.response.photos.items[0]); // why the first one?
+            callback(template.html());
+        }); // TODO: second callback to handle error?
+    };
+
+    obj._requestVenue = function(url, id, callback) {
+
+        const self = this;
+
+        $.get(url, function (data, status) {
+            if (status === 'success') {
+                var place = _find(id, data);
+                template.setVenueHTML(place);
+
+                if (place)
+                    self._photo(connector.getPhotoURL(id), callback);
+                else
+                    callback(template.html());
+            }
+            else
+                callback(template.html());
+        });
+
+        const _find = function (id, data) {
+            for (var i = 0; i < data.response.venues.length; i++)
+                if (data.response.venues[i].id === id)
+                    return data.response.venues[i];
+            return null;
+        };
+    };
+
+    obj.resolve = function (id, query, callback) {
+        // The handler starts resolution by requesting the venue to FourSquare
+        // Resolution finishes when the callback is called
+        this._requestVenue(connector.getVenueURL(query), id, callback);
+    };
+
+    return obj;
+};
+
+var TemplateAssembler = function () {
+    const obj = {};
+
+    obj._top = '';
+    obj._center = '';
+    obj._bottom = '';
+    obj._htmlTemplate = {
+        header: '<h3 class="info-venue-title">' + '#NAME#' + '</h3>',
+        img: '<img src="' + '#PREFIX#' + '180' + '#SUFFIX#' +'">',
+        phone: '<p class="info-venue-content"><strong>Phone</strong>: ' + '#PHONE#' + '</p>',
+        address: '<p class="info-venue-content"><strong>Address</strong>: ' + '#ADDRESS#' + '</p>',
+        fourSqrLink:  '<p><a href="' + 'https://foursquare.com/v/' + '#ID#' + '?ref=' + fourSqr._clientID + '" target="_blank" class="info-venue-content">Checkout more at FourSquare></a></p>'
+    };
+
+    obj.setVenueHTML = function (venue) {
+        if(venue) {
+            this._top = this._htmlTemplate.header.replace('#NAME#', venue.name);
+            if(venue.contact.phone)
+                this._bottom = this._htmlTemplate.phone.replace('#PHONE#', venue.contact.phone);
+            if(venue.location.address)
+                this._bottom += this._htmlTemplate.address.replace('#ADDRESS#', venue.location.address);
+            this._bottom += this._htmlTemplate.fourSqrLink.replace('#ID#', venue.id);
+        } else {
+            this._top = '<h1>Ops! Sorry!</h1>';
+            this._bottom = '<p>We could\'n find more info about this place...</p>';
+        }
+    };
+
+    obj.setPhotoHTML = function (photo) {
+        if(photo)
+            this._center = this._htmlTemplate.img
+                .replace('#PREFIX#', photo.prefix)
+                .replace('#SUFFIX#', photo.suffix);
+    };
+
+    obj.html = function () {
+        return this._top + this._center + this._bottom;
+    };
+
+    return obj;
+};
+
+var connector = {
     _clientID: 'RSE3SPI05J0UPAGUGAN5XQVWGYHTNJQFRYWAS5HXCNGIML5D',
     _clientSecret: 'PV23XIPOND4OLQN5Q3BIAWDNQIQ2YNC01DX5JTBSJSAY10NW',
     _APIVersionDate: '20130815',
-    _HTMLStr: '',
-    _currentID: '',
-    _clientMethod: '',
-    _genPhotoRequestURL: function(venueID) {
-        return "https://api.foursquare.com/v2/venues/" + venueID
-            + "/photos?client_id=" + this._clientID
-            + "&client_secret=" + this._clientSecret
-            + "&v=" + this._APIVersionDate;
-    },
-    _genVenueRequestURL: function(query) {
+    getVenueURL: function(query) {
         return "https://api.foursquare.com/v2/venues/search?client_id="
             + this._clientID + "&client_secret=" + this._clientSecret + "&" + "v=" + this._APIVersionDate
             + "&ll=18.4726498,-69.8865431&query=" + query;
     },
-    _handleVenueResponse: function(data, status) {
-        // called from _requestVenue callback
-        if(status === "success") {
-            var venues = data.response.venues;
-            var isInResponse = false;
-            for(var i = 0; i < venues.length; i++) {
-                if(venues[i].id === this._currentID) {
-                    isInResponse = true;
-                    this._generateVenueHTML(venues[i]);
-                    this._requestPhotosFor(this._currentID);
-                    break;
-                }
-            }
-            if(!isInResponse)
-                this._generateVenueHTML();
-        } else {
-            // TODO: Create an error HTML
-            console.log("ops! something went wrong getting info from Foursquare");
-            console.log(status);
-        }
-
-    },
-    _requestVenue: function(query) {
-        // make AJAX venue request to Foursquare.
-        var self = this;
-        $.get(this._genVenueRequestURL(query),
-            function(data, status){
-                self._handleVenueResponse(data, status);
-            });
-    },
-    _requestPhotosFor: function (venueID) {
-        // make AJAX photo request to Foursquare
-        var self = this;
-        $.get(this._genPhotoRequestURL(venueID), function(data, status) {
-            self._handlePhotoResponse(data, status);
-        });
-    },
-    _handlePhotoResponse: function(data, status) {
-        // called from _requestPhotosFor callback
-        if(status === "success") {
-            var photos = data.response.photos.items;
-            if(photos.length > 0) {
-                var img = venueHTML.img.replace('#PREFIX#', photos[0].prefix).replace('#SUFFIX#', photos[0].suffix);
-                this._HTMLStr = this._HTMLStr.replace('#IMG#', img);
-            } else {
-                this._HTMLStr = this._HTMLStr.replace('#IMG#', '');
-            }
-        } else {
-            console.log("ops! Something went wrong retrieving pics: " + status);
-        }
-        // Ultimate reponsable of calling its client method to display infoView
-        // TODO: How could I remove this responsability from this method?
-        this._clientMethod(this._HTMLStr);
-    },
-    _generateVenueHTML: function(venue) {
-        if(venue) {
-            this._HTMLStr = venueHTML.header.replace('#NAME#', venue.name);
-            this._HTMLStr += '#IMG#';
-            if(venue.contact.phone)
-                this._HTMLStr += venueHTML.phone.replace('#PHONE#', venue.contact.phone);
-            if(venue.location.address)
-                this._HTMLStr += venueHTML.address.replace('#ADDRESS#', venue.location.address);
-            this._HTMLStr += venueHTML.fourSqrLink.replace('#ID#', venue.id);
-        } else {
-            this._HTMLStr = '<p>Ops! We could\'n find more info about this place!</p>';
-            this._clientMethod(this._HTMLStr);
-        }
-    },
-    setVenueContent: function(id, name, callback) {
-        // Intended to be the only method called from the outside
-        this._clientMethod = callback;
-        this._currentID = id;
-        this._requestVenue(name);
+    getPhotoURL: function (id) {
+        return "https://api.foursquare.com/v2/venues/" + id
+            + "/photos?client_id=" + this._clientID
+            + "&client_secret=" + this._clientSecret
+            + "&v=" + this._APIVersionDate;
     }
 };
 
-var venueHTML = {
-    header: '<h3 class="info-venue-title">' + '#NAME#' + '</h3>',
-    img: '<img src="' + '#PREFIX#' + '180' + '#SUFFIX#' +'">',
-    phone: '<p class="info-venue-content"><strong>Phone</strong>: ' + '#PHONE#' + '</p>',
-    address: '<p class="info-venue-content"><strong>Address</strong>: ' + '#ADDRESS#' + '</p>',
-    fourSqrLink:  '<p><a href="' + 'https://foursquare.com/v/' + '#ID#' + '?ref=' + fourSqr._clientID + '" target="_blank" class="info-venue-content">Checkout more at FourSquare></a></p>'
-};
+
 
 // TODO: Maybe create a small gallery
 // TODO: Consider filtering by data.response.photos.items[i].visibility === 'public'
