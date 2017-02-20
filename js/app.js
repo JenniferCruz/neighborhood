@@ -78,6 +78,7 @@ ko.applyBindings(viewModel);
 
 // TODO: check crossbrowsers
 // TODO: Take only used portions of bootstrap
+// TODO: Call Foursquare even if Google Maps doesn't load
 
 window.onresize = function (){
     // inspiration from

@@ -62,8 +62,27 @@
     <script src="js/fourSquare.js"></script>
     <script src="js/map.js"></script>
     <script src="js/app.js"></script>
+    <script>
+        // TODO: extract to map file
+        function handleGoogleError() {
+            // TODO: Get real image from RD - remember credits
+            const mapSection = document.getElementById('map');
+            const sorryHTML = '<div class="map-missing-excuse"><h1>Uh oh!</h1>'
+                + '<h2>Something went wrong</h2>'
+                + '<h2>loading the map from Google</h2>'
+                + '<h3>Make sure you are connected to the internet</h3>'
+                + '<h3>and try reloading this page</h3>'
+                + '<h4>In the midtime...</h4>'
+                + '<p>You can still see (just) the list of recommended places.</p></div>'
+
+            mapSection.className += ' map-placeholder';
+            mapSection.innerHTML = sorryHTML;
+        }
+    </script>
+
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyA2WdAm_egMhv6ledFOuhHoNrWlMgDL1cc&callback=loadMap">
+        src='https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyA2WdAm_egMhv6ledFOuhHoNrWlMgDL1cc&callback=loadMap'
+        onerror='handleGoogleError()'>
     </script>
 </body>
 </html>
