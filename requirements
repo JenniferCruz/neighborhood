@@ -29,3 +29,24 @@ A README file is included detailing all steps required to successfully run the a
 Comments are present and effectively explain longer code procedures.
 
 
+------------------------------
+
+TODO: FINAL LIST...
+- Add more locations
+- Refine filter options (make them less and more communicative)
+- Footer content
+- Get a nice image for map error background (credit properly)
+- Extract map error handler to map file
+- Host info/content in external database
+- take bootstrap's css in use
+- check crossbrowsers
+- check in mobile
+
+-------------------------------
+CREDITS:
+<!--https://snazzymaps.com/style/6793/grayscale-yellow-->
+<!--http://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_temp_blog&stacked=h-->
+powered by
+Google Maps
+FourSquare
+

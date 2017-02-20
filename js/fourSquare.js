@@ -1,6 +1,3 @@
-// TODO: How can I hide sensitive data?
-// TODO: Credit FourSquare
-
 var fourSqr = {
     setVenueContent: function(query, id, callback) {
         // Create new Handler and Template to avoid a race condition
@@ -11,28 +8,36 @@ var fourSqr = {
 
 
 var Handler = function (template) {
-
     const obj = {};
+
+    obj.resolve = function (id, query, callback) {
+        // The handler starts resolution by requesting the venue to FourSquare
+        // Resolution finishes when the callback is called
+        this._requestVenue(connector.getVenueURL(query), id, callback);
+    };
+
 
     obj._template = template;
 
     obj._photo = function (url, callback) {
+        // TODO: Display all photos from FourSquare in a small gallery
+        // TODO: Filter photos by data.response.photos.items[i].visibility === 'public'
+        // TODO: Store img url for faster resolution next time same info is requested during current session
         $.get(url, function (data, status) {
             if (status === 'success' && data.response.photos.items.length > 0)
                 template.setPhotoHTML(data.response.photos.items[0]); // why the first one?
             callback(template.html());
-        }); // TODO: second callback to handle error?
+        });
     };
 
     obj._requestVenue = function(url, id, callback) {
-
         const self = this;
 
         $.get(url, function (data, status) {
             if (status === 'success') {
                 var place = _find(id, data);
                 template.setVenueHTML(place);
-
+                // TODO: store info for reuse during current session
                 if (place)
                     self._photo(connector.getPhotoURL(id), callback);
                 else
@@ -40,20 +45,16 @@ var Handler = function (template) {
             }
             else
                 callback(template.html());
+            // TODO: Support photo request even if venue request was not a success
         });
 
+        // inner function to find the right venue in Four Square's response
         const _find = function (id, data) {
             for (var i = 0; i < data.response.venues.length; i++)
                 if (data.response.venues[i].id === id)
                     return data.response.venues[i];
             return null;
         };
-    };
-
-    obj.resolve = function (id, query, callback) {
-        // The handler starts resolution by requesting the venue to FourSquare
-        // Resolution finishes when the callback is called
-        this._requestVenue(connector.getVenueURL(query), id, callback);
     };
 
     return obj;
@@ -70,7 +71,8 @@ var TemplateAssembler = function () {
         img: '<img src="' + '#PREFIX#' + '180' + '#SUFFIX#' +'">',
         phone: '<p class="info-venue-content"><strong>Phone</strong>: ' + '#PHONE#' + '</p>',
         address: '<p class="info-venue-content"><strong>Address</strong>: ' + '#ADDRESS#' + '</p>',
-        fourSqrLink:  '<p><a href="' + 'https://foursquare.com/v/' + '#ID#' + '?ref=' + fourSqr._clientID + '" target="_blank" class="info-venue-content">Checkout more at FourSquare></a></p>'
+        fourSqrLink:  '<p><a href="' +   'https://foursquare.com/v/' + '#ID#' + '?ref=' + connector.clientID
+                        + '" target="_blank" class="info-venue-content">Checkout more at FourSquare></a></p>'
     };
 
     obj.setVenueHTML = function (venue) {
@@ -89,9 +91,7 @@ var TemplateAssembler = function () {
 
     obj.setPhotoHTML = function (photo) {
         if(photo)
-            this._center = this._htmlTemplate.img
-                .replace('#PREFIX#', photo.prefix)
-                .replace('#SUFFIX#', photo.suffix);
+            this._center = this._htmlTemplate.img.replace('#PREFIX#', photo.prefix).replace('#SUFFIX#', photo.suffix);
     };
 
     obj.html = function () {
@@ -102,25 +102,18 @@ var TemplateAssembler = function () {
 };
 
 var connector = {
-    _clientID: 'RSE3SPI05J0UPAGUGAN5XQVWGYHTNJQFRYWAS5HXCNGIML5D',
+    clientID: 'RSE3SPI05J0UPAGUGAN5XQVWGYHTNJQFRYWAS5HXCNGIML5D',
     _clientSecret: 'PV23XIPOND4OLQN5Q3BIAWDNQIQ2YNC01DX5JTBSJSAY10NW',
     _APIVersionDate: '20130815',
     getVenueURL: function(query) {
         return "https://api.foursquare.com/v2/venues/search?client_id="
-            + this._clientID + "&client_secret=" + this._clientSecret + "&" + "v=" + this._APIVersionDate
+            + this.clientID + "&client_secret=" + this._clientSecret + "&" + "v=" + this._APIVersionDate
             + "&ll=18.4726498,-69.8865431&query=" + query;
     },
     getPhotoURL: function (id) {
         return "https://api.foursquare.com/v2/venues/" + id
-            + "/photos?client_id=" + this._clientID
+            + "/photos?client_id=" + this.clientID
             + "&client_secret=" + this._clientSecret
             + "&v=" + this._APIVersionDate;
     }
 };
-
-
-
-// TODO: Maybe create a small gallery
-// TODO: Consider filtering by data.response.photos.items[i].visibility === 'public'
-// TODO: Consider storing img ID for faster future request or just work with those
-// TODO: What if this request was not a success but the previous one was????

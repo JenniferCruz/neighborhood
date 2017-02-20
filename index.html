@@ -11,9 +11,11 @@
 
     <div class="row">
         <section class="col-sm-3 content">
+            <span class="close" aria-hidden="true" aria-label="Close"
+                  data-bind="event: {click : hideFilterSection}, visible: !isSectionHidden() && windowIsSmall()">x</span>
 
-            <button type="button" class="close" aria-label="Close" data-bind="event: {click : hideFilterSection}, visible: !isSectionHidden() && windowIsSmall()"><span aria-hidden="true">&times;</span></button>
-            <span class="caret" data-bind="event: {click : showFilterSection}, visible: isSectionHidden() &&  windowIsSmall()"></span>
+            <span class="caret"
+                  data-bind="event: {click : showFilterSection}, visible: isSectionHidden() &&  windowIsSmall()"></span>
 
             <header>
                 <h4>Get to know</h4>
@@ -22,7 +24,6 @@
             </header>
 
             <div id="text-content" data-bind="visible: !windowIsSmall() || !isSectionHidden() ">
-
                 <p>
                     One of the first cities to be ever built in America, La Zona Colonial
                     is now but a small neighborhood in the vibrant Caribbean city of Santo Domingo,
@@ -30,10 +31,11 @@
                     by my sister:
                 </p>
 
-                <!-- FILTER -->
+                <!-- FILTER DROPDOWN -->
                 <div class="form-group">
                     <em>Filter by: </em>
-                    <select data-bind="options: tags, value: selectedFilter, event: { change: onFilter}" class="form-control"></select>
+                    <select data-bind="options: tags, value: selectedFilter, event: { change: onFilter}"
+                            class="form-control"></select>
                 </div>
 
                 <!--GENERATE LOCATION LISTING -->
@@ -42,15 +44,13 @@
                    css: { selected: $data == $root.selectedLocation() },
                    click: $root.onItemClick" class="location-item"></li>
                 </ul>
-
             </div>
-
         </section>
 
-        <section id="map" class="col-sm-9 map-content">
-            <!--TODO: Handle is map is not loaded-->
-        </section>
+        <section id="map" class="col-sm-9 map-content"></section>
+
     </div>
+
     <footer class="container-fluid">
         <p>* Sorry, but the beaches are about 45min drive!</p>
         <p>Credits or something here :P</p>
@@ -63,9 +63,7 @@
     <script src="js/map.js"></script>
     <script src="js/app.js"></script>
     <script>
-        // TODO: extract to map file
         function handleGoogleError() {
-            // TODO: Get real image from RD - remember credits
             const mapSection = document.getElementById('map');
             const sorryHTML = '<div class="map-missing-excuse"><h1>Uh oh!</h1>'
                 + '<h2>Something went wrong</h2>'
@@ -86,6 +84,3 @@
     </script>
 </body>
 </html>
-
-<!--https://snazzymaps.com/style/6793/grayscale-yellow-->
-<!--http://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_temp_blog&stacked=h-->
