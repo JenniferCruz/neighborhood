@@ -44,9 +44,24 @@ header {
 
 }
 
+footer {
+    text-align: right;
+    padding-top: 15px;
+    /*background-color: #ddd;*/
+    font-size: 0.85em;
+    color: #737373;
+}
+
+.icon-sm {
+    width: 25px;
+}
+
+.icon-lr {
+    width: 100px;
+}
+
 .map-placeholder {
-    /*background-image: url("../img/rd.jpg");*/
-    background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/95/Dominican_Republic_%28orthographic_projection%29.svg");
+    background-image: url("../img/alcazar-de-colon.jpg");
     background-repeat: no-repeat;
     background-size: cover;
 }
@@ -56,6 +71,10 @@ header {
     text-align: end;
     bottom: 100px;
     right: 20px;
+    background-color: rgba(254,212,28,0.6);
+    /*background-color: rgba(50,50,50,0.6);*/
+    border-radius: 10px;
+    padding: 10px;
 }
 
 @media (min-width: 767px) {

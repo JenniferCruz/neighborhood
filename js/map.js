@@ -75,6 +75,20 @@ var loadMap = function () {
 
 };
 
+function handleGoogleError() {
+    const mapSection = document.getElementById('map');
+    const sorryHTML = '<div class="map-missing-excuse"><h1>Uh oh!</h1>'
+        + '<h2>Something went wrong</h2>'
+        + '<h2>loading the map from Google</h2>'
+        + '<h3>Make sure you are connected to the internet</h3>'
+        + '<h3>and try reloading this page</h3>'
+        + '<h4>In the midtime...</h4>'
+        + '<p>You can still see (just) the list of recommended places.</p></div>'
+
+    mapSection.className += ' map-placeholder';
+    mapSection.innerHTML = sorryHTML;
+}
+
 
 var mapStyles = [
     {"featureType":"all", "elementType":"labels.text.fill", "stylers":[{"color":"#000000"}]},

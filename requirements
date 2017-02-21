@@ -15,32 +15,34 @@ AS APP:
 -- I call the Google Maps API only once, to add a full-screen map to my page.
 -- I use KO to handle info on page subject to change (such as filter and list), to track click events on list items
 -- I handle things done by Maps API with the API and not KO (ex.: creating markers -they should not be KO observables-, tracking click events on them, making/refreshing the map)
+-- DOM is not updated manually but via KO.
+-- Comments are present and effectively explain longer code procedures.
 - I load all data APIs asynchronously
 
 
 
-Indicate on UI AND README what interfaces you are using.
+
 
 Data is loaded from an external source (personal challenge - alternative: LocalStorage)
-DOM is not updated manually but via KO.
 
-A README file is included detailing all steps required to successfully run the application.
 
-Comments are present and effectively explain longer code procedures.
 
 
 ------------------------------
 
 TODO: FINAL LIST...
-- Add more locations
-- Refine filter options (make them less and more communicative)
-- Footer content
-- Get a nice image for map error background (credit properly)
-- Extract map error handler to map file
-- Host info/content in external database
-- take bootstrap's css in use
+-- Footer content (credits - indicate what interfaces you are using)
+-- Refine filter options (make them less and more communicative)
+-- Add more locations
+-- Get a nice image for map error background (credit properly)
+-- Extract map error handler to map file
+-+ take bootstrap's css in use
 - check crossbrowsers
+- complete readme
+- Host info/content in external database
 - check in mobile
+
+
 
 -------------------------------
 CREDITS:
@@ -50,3 +52,7 @@ powered by
 Google Maps
 FourSquare
 
+-------------------------------
+TODO: Before submitting
+- Make sure README is good
+- Check mobile
