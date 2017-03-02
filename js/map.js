@@ -51,7 +51,7 @@ var map = {
 var loadMap = function () {
     map.chart = new google.maps.Map(document.getElementById('map'), {
         center : {lat: 18.4726498, lng: -69.8865431},
-        zoom : 17,
+        zoom : 17, // TODO: Change zoom for smaller devices
         styles : mapStyles
     });
 
