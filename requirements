@@ -20,13 +20,7 @@ AS APP:
 - I load all data APIs asynchronously
 
 
-
-
-
 Data is loaded from an external source (personal challenge - alternative: LocalStorage)
-
-
-
 
 ------------------------------
 
@@ -39,20 +33,11 @@ TODO: FINAL LIST...
 -+ take bootstrap's css in use
 -- change footer to about link + bootstrap modal
 -- make 'footer' look pretty
-- check crossbrowsers
-- complete readme
+-- complete readme
 - Host info/content in external database
+- check crossbrowsers
 - check in mobile
 
-
-
--------------------------------
-CREDITS:
-<!--https://snazzymaps.com/style/6793/grayscale-yellow-->
-<!--http://www.w3schools.com/bootstrap/tryit.asp?filename=trybs_temp_blog&stacked=h-->
-powered by
-Google Maps
-FourSquare
 
 -------------------------------
 TODO: Before submitting
