@@ -14,11 +14,6 @@ li.selected {
     padding: 2em;
 }
 
-.map-content {
-    /*width: 72%;*/
-    /*background-color: lightslategrey;*/
-}
-
 .location-item {
     position: relative;
     display: block;
@@ -44,20 +39,13 @@ header {
 
 }
 
-footer {
-    text-align: right;
-    padding-top: 15px;
-    /*background-color: #ddd;*/
-    font-size: 0.85em;
-    color: #737373;
+
+.icon {
+    width: 90px;
 }
 
-.icon-sm {
-    width: 25px;
-}
-
-.icon-lr {
-    width: 100px;
+.icons-set {
+    text-align: center;
 }
 
 .map-placeholder {
@@ -72,9 +60,25 @@ footer {
     bottom: 100px;
     right: 20px;
     background-color: rgba(254,212,28,0.6);
-    /*background-color: rgba(50,50,50,0.6);*/
     border-radius: 10px;
     padding: 10px;
+}
+
+.map-content {
+    position: relative;
+}
+
+footer {
+    position: absolute;
+    z-index: 99;
+    bottom: 0;
+    right: 40px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    background-color: rgba(254,212,28,0.6);
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 @media (min-width: 767px) {
@@ -90,7 +94,6 @@ footer {
     }
 
     header h4 {
-        /*font-size: 1em;*/
         margin-top: 0;
     }
 
@@ -100,6 +103,13 @@ footer {
 
     section.content {
         padding-bottom: 10px;
+    }
+
+    footer {
+        position: relative;
+        background-color: rgba(254,212,28,0); /* just make it transparent */
+        padding: 10px 0;
+        text-align: right;
     }
 }
 

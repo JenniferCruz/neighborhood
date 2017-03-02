@@ -37,6 +37,8 @@ TODO: FINAL LIST...
 -- Get a nice image for map error background (credit properly)
 -- Extract map error handler to map file
 -+ take bootstrap's css in use
+-- change footer to about link + bootstrap modal
+-- make 'footer' look pretty
 - check crossbrowsers
 - complete readme
 - Host info/content in external database

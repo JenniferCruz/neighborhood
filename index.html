@@ -47,26 +47,49 @@
             </div>
         </section>
 
-        <section id="map" class="col-sm-9 map-content"></section>
-        <footer class="container-fluid col-sm-9 ">
-            <h3>About this site</h3>
-            <p>
-                This site was developed by <a href="#">Jennifer</a> for
-                <a href="" target="_blank">Udacity's Front-End Nanodegree Specialization</a>,
-                using <a href="http://knockoutjs.com/" target="_blank">Knockout Framework</a>,
-                the <a href="https://developers.google.com/maps/" target="_blank">Google Maps API</a>,
-                <a href="https://developer.foursquare.com/" target="_blank">Foursquare's API</a>
-                and a tiny bit of <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>'s styles
-            </p>
-            <img src="img/ko-logo.png" class="icon-lr"/>
-            <img src="img/google-maps-logo.svg" class="icon-sm"/>
-            <img src="img/foursquare-icon.png" class="icon-sm"/>
-        </footer>
+        <section>
+            <section id="map" class="col-sm-9 map-content">
 
+            </section>
+            <footer class="">
+                <a href="" data-toggle="modal" data-target="#myModal">About this site</a>
+            </footer>
+        </section>
+
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!--<button type="button" class="btn btn-default" data-dismiss="modal">x</button>-->
+                    <span data-dismiss="modal" class="close">x</span>
+                    <p>
+                        This site was developed by <a href="#">Jennifer</a> for
+                        <a href="" target="_blank">Udacity's Front-End Nanodegree Specialization</a>,
+                        using <a href="http://knockoutjs.com/" target="_blank">Knockout Framework</a>,
+                        the <a href="https://developers.google.com/maps/" target="_blank">Google Maps API</a>,
+                        <a href="https://developer.foursquare.com/" target="_blank">Foursquare's API</a>
+                        and a tiny bit of <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>.
+                    </p>
+                    <hr>
+                    <div class="icons-set">
+                        <h3>Powered by</h3>
+                        <img src="img/foursquare-icon.png" class="icon"/>
+                        <img src="img/ko-logo.png" class="icon"/>
+                        <img src="img/google-maps-logo.svg" class="icon"/>
+                        <img src="img/bootstrap-solid.svg" class="icon"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
     <script src="js/lib/knockout-3.4.1.js"></script>
     <script src="js/content.js"></script>
     <script src="js/fourSquare.js"></script>
