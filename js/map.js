@@ -37,21 +37,15 @@ var map = {
             viewModel.onItemClick(location, map);
     },
     showMarkers : function (markers) {
-        var m = this.chart;
         markers.forEach(function (marker) {
-            marker.setMap(m);
+            marker.setVisible(true);
         });
     },
     hideMarkers : function (markers) {
         markers.forEach(function (marker) {
-            marker.setMap(null);
+            marker.setVisible(false);
         });
     }
-    // TODO: setMap method is not the efficient way to show or hide markers. A more optimized way is to use Marker's' setVisible method. Ex:
-    // someMarker.setVisible(true); // or false;
-    // Marker class documentation here https://developers.google.com/maps/documentation/javascript/reference?hl=en#MarkerOptions
-    // Hoever, depending on your implementations with showing the marker after creating it, the setVisible method may not work. In this case, you can keep using setMap method.
-
 };
 
 
