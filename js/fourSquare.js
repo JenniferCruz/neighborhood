@@ -7,10 +7,10 @@ var fourSqr = {
 };
 
 
-var Handler = function (template) {
+var Handler = function(template) {
     var obj = {};
 
-    obj.resolve = function (id, query, callback) {
+    obj.resolve = function(id, query, callback) {
         // The handler starts resolution by requesting the venue to FourSquare
         // Resolution finishes when the callback is called
         this._requestVenue(connector.getVenueURL(query), id, callback);
@@ -19,21 +19,21 @@ var Handler = function (template) {
 
     obj._template = template;
 
-    obj._apologizeToClient = function (callback) {
+    obj._apologizeToClient = function(callback) {
         template.setVenueHTML();
         callback(template.html());
     };
 
-    obj._photo = function (url, callback) {
+    obj._photo = function(url, callback) {
         // TODO: Display all photos from FourSquare in a small gallery
         // TODO: Filter photos by data.response.photos.items[i].visibility === 'public'
         // TODO: Store img url for faster resolution next time same info is requested during current session
         var self = this;
-        $.get(url, function (data, status) {
+        $.get(url, function(data, status) {
             if (status === 'success' && data.response.photos.items.length > 0)
                 template.setPhotoHTML(data.response.photos.items[0]); // why the first one?
             callback(template.html());
-        }).catch(function () {
+        }).catch(function() {
             self._apologizeToClient(callback);
         });
     };
@@ -41,7 +41,7 @@ var Handler = function (template) {
     obj._requestVenue = function(url, id, callback) {
         var self = this;
 
-        $.get(url, function (data, status) {
+        $.get(url, function(data, status) {
             if (status === 'success') {
                 var place = _find(id, data);
                 template.setVenueHTML(place);
@@ -50,16 +50,15 @@ var Handler = function (template) {
                     self._photo(connector.getPhotoURL(id), callback);
                 else
                     callback(template.html());
-            }
-            else
+            } else
                 self._apologizeToClient(callback);
-                // TODO: Support photo request even if venue request was not a success
-        }).catch(function () {
+            // TODO: Support photo request even if venue request was not a success
+        }).catch(function() {
             self._apologizeToClient(callback);
         });
 
         // inner function to find the right venue in Four Square's response
-        var _find = function (id, data) {
+        var _find = function(id, data) {
             for (var i = 0; i < data.response.venues.length; i++)
                 if (data.response.venues[i].id === id)
                     return data.response.venues[i];
@@ -70,7 +69,7 @@ var Handler = function (template) {
     return obj;
 };
 
-var TemplateAssembler = function () {
+var TemplateAssembler = function() {
     var obj = {};
 
     obj._top = '';
@@ -78,19 +77,19 @@ var TemplateAssembler = function () {
     obj._bottom = '';
     obj._htmlTemplate = {
         header: '<h3 class="info-venue-title">' + '#NAME#' + '</h3>',
-        img: '<img src="' + '#PREFIX#' + '180' + '#SUFFIX#' +'">',
+        img: '<img src="' + '#PREFIX#' + '180' + '#SUFFIX#' + '">',
         phone: '<p class="info-venue-content"><strong>Phone</strong>: ' + '#PHONE#' + '</p>',
         address: '<p class="info-venue-content"><strong>Address</strong>: ' + '#ADDRESS#' + '</p>',
-        fourSqrLink:  '<p><a href="' +   'https://foursquare.com/v/' + '#ID#' + '?ref=' + connector.clientID +
-            '" target="_blank" class="info-venue-content">Checkout more at FourSquare></a></p>'
+        fourSqrLink: '<p><a href="' + 'https://foursquare.com/v/' + '#ID#' + '?ref=' + connector.clientID +
+        '" target="_blank" class="info-venue-content">Checkout more at FourSquare></a></p>'
     };
 
-    obj.setVenueHTML = function (venue) {
-        if(venue) {
+    obj.setVenueHTML = function(venue) {
+        if (venue) {
             this._top = this._htmlTemplate.header.replace('#NAME#', venue.name);
-            if(venue.contact.phone)
+            if (venue.contact.phone)
                 this._bottom = this._htmlTemplate.phone.replace('#PHONE#', venue.contact.phone);
-            if(venue.location.address)
+            if (venue.location.address)
                 this._bottom += this._htmlTemplate.address.replace('#ADDRESS#', venue.location.address);
             this._bottom += this._htmlTemplate.fourSqrLink.replace('#ID#', venue.id);
         } else {
@@ -99,12 +98,12 @@ var TemplateAssembler = function () {
         }
     };
 
-    obj.setPhotoHTML = function (photo) {
-        if(photo)
+    obj.setPhotoHTML = function(photo) {
+        if (photo)
             this._center = this._htmlTemplate.img.replace('#PREFIX#', photo.prefix).replace('#SUFFIX#', photo.suffix);
     };
 
-    obj.html = function () {
+    obj.html = function() {
         return this._top + this._center + this._bottom;
     };
 
@@ -120,7 +119,7 @@ var connector = {
             this.clientID + "&client_secret=" + this._clientSecret + "&" + "v=" +
             this._APIVersionDate + "&ll=18.4726498,-69.8865431&query=" + query;
     },
-    getPhotoURL: function (id) {
+    getPhotoURL: function(id) {
         return "https://api.foursquare.com/v2/venues/" + id +
             "/photos?client_id=" + this.clientID +
             "&client_secret=" + this._clientSecret +

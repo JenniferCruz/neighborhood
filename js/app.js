@@ -1,5 +1,5 @@
 // LOCATION OBJECT CONSTRUCTOR
-var Location = function (data) {
+var Location = function(data) {
     var self = this;
     self.name = data.name;
     self.tags = data.tags;
@@ -11,17 +11,17 @@ var Location = function (data) {
 };
 
 // VIEW MODEL
-var LocationsViewModel = function () {
+var LocationsViewModel = function() {
     // TODO: work with Foursquare even if Google Maps doesn't load,
     // so that when a user clicks on a location in the list, info about this place is displayed
 
     // DATA
-    const windowWidthTreshold = 767;
+    var windowWidthTreshold = 767;
 
     var self = this;
     self.locations = new ko.observableArray([]);
 
-    cityLocations.forEach(function (location) {
+    cityLocations.forEach(function(location) {
         self.locations.push(new Location(location));
     });
 
@@ -37,7 +37,7 @@ var LocationsViewModel = function () {
 
 
     // BEHAVIOUR
-    self.onItemClick = function (location, caller) {
+    self.onItemClick = function(location, caller) {
         if (location === self.selectedLocation())
             self.selectedLocation('undefined');
         else
@@ -47,7 +47,7 @@ var LocationsViewModel = function () {
             map.onMarkerClick(location.mapMarker, location, viewModel);
     };
 
-    self.onFilter = function (vm) {
+    self.onFilter = function(vm) {
         var filterTag = vm.selectedFilter();
         var markersToShow = [];
         var markersToHide = [];
@@ -56,8 +56,7 @@ var LocationsViewModel = function () {
             if (currentLocation.tags.includes(filterTag)) {
                 currentLocation.visible(true);
                 markersToShow.push(currentLocation.mapMarker);
-            }
-            else {
+            } else {
                 currentLocation.visible(false);
                 markersToHide.push(currentLocation.mapMarker);
             }
@@ -66,15 +65,15 @@ var LocationsViewModel = function () {
         map.hideMarkers(markersToHide);
     };
 
-    self.hideFilterSection = function () {
+    self.hideFilterSection = function() {
         self.isSectionHidden(true);
     };
 
-    self.showFilterSection = function () {
+    self.showFilterSection = function() {
         self.isSectionHidden(false);
     };
 
-    self.windowIsSmall = function () {
+    self.windowIsSmall = function() {
         return self.windowWidth() < windowWidthTreshold;
     };
 
@@ -83,7 +82,7 @@ var LocationsViewModel = function () {
 var viewModel = new LocationsViewModel();
 ko.applyBindings(viewModel);
 
-window.onresize = function (){
+window.onresize = function() {
     // Idea from
     // http://stackoverflow.com/questions/10854179/how-to-make-window-size-observable-using-knockout
     viewModel.windowWidth(window.innerWidth);
