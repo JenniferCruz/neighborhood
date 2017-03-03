@@ -3,18 +3,22 @@ var map = {
     infoWindow : null, // TODO: style info window
     _currentAnimatedMarker : 'undefined',
     _populateInfoWindow : function (marker, locationID) {
-        if (this.infoWindow.marker != marker) {
-            this.infoWindow.marker = marker;
-            this.infoWindow.setContent('<p>Loading info for ' + marker.title + ' </p>'); // TODO: include 'loading' animation
-            this.infoWindow.open(map, marker);
-            fourSqr.setVenueContent(locationID, marker.title, function (html) {
-                map.infoWindow.setContent(html);
-                map.infoWindow.open(map, marker);
-            });
-        } else {
-            // TODO: fix bug when user closes infoWindow and clicks again on the same marker, infoWindow won't open again
-        }
+        this.infoWindow.marker = marker;
+        this.infoWindow.setContent('<p>Loading info for ' + marker.title + ' </p>'); // TODO: include 'loading' animation
+        this.infoWindow.open(map, marker);
+        fourSqr.setVenueContent(locationID, marker.title, function (html) {
+            map.infoWindow.setContent(html);
+            map.infoWindow.open(map, marker);
+        });
     },
+    // TODO: Add a closeclick event listener for infowindow so that when it is closed, it also stops markers animation to prevent it from bouncing without an opened infowindow.
+    // Ex:
+    // google.maps.event.addListener(infowindow, 'closeclick', function() {
+    //     // stop marker animation here
+    // });
+    // Reference: InfoWindow class documentation @Google Developers
+    // https://developers.google.com/maps/documentation/javascript/reference#InfoWindow
+
     onMarkerClick : function (marker, location, caller) {
         var markerAnimation = marker.getAnimation();
         // Quite the currently animated marker, if any
@@ -45,6 +49,11 @@ var map = {
             marker.setMap(null);
         });
     }
+    // TODO: setMap method is not the efficient way to show or hide markers. A more optimized way is to use Marker's' setVisible method. Ex:
+    // someMarker.setVisible(true); // or false;
+    // Marker class documentation here https://developers.google.com/maps/documentation/javascript/reference?hl=en#MarkerOptions
+    // Hoever, depending on your implementations with showing the marker after creating it, the setVisible method may not work. In this case, you can keep using setMap method.
+
 };
 
 
