@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>La Zona Colonial in Santo Domingo</title>
@@ -7,97 +8,88 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
 
-    <div class="row">
-        <section class="col-sm-3 content">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"
-                  data-bind="event: {click : hideFilterSection}, visible: !isSectionHidden() && windowIsSmall()"></span>
+<div class="row">
+    <section class="col-sm-3 content">
+        <span class="glyphicon glyphicon-remove" aria-hidden="true" data-bind="event: {click : hideFilterSection}, visible: !isSectionHidden() && windowIsSmall()"></span>
 
-            <span class="glyphicon glyphicon-align-justify"
-                  data-bind="event: {click : showFilterSection}, visible: isSectionHidden() &&  windowIsSmall()"></span>
+        <span class="glyphicon glyphicon-align-justify" data-bind="event: {click : showFilterSection}, visible: isSectionHidden() &&  windowIsSmall()"></span>
 
-            <header>
-                <h4>Get to know</h4>
-                <h1 class="neighborhood">La Zona Colonial</h1>
-                <h4>in Santo Domingo, Dominican Republic</h4>
-            </header>
+        <header>
+            <h4>Get to know</h4>
+            <h1 class="neighborhood">La Zona Colonial</h1>
+            <h4>in Santo Domingo, Dominican Republic</h4>
+        </header>
 
-            <div id="text-content" data-bind="visible: !windowIsSmall() || !isSectionHidden() ">
-                <p>
-                    One of the first cities to be ever built in America, La Zona Colonial
-                    is now but a small neighborhood in the vibrant Caribbean city of Santo Domingo,
-                    full with life and things to see. Here are a few of the places recommended
-                    by my sister:
-                </p>
+        <div id="text-content" data-bind="visible: !windowIsSmall() || !isSectionHidden() ">
+            <p>
+                One of the first cities to be ever built in America, La Zona Colonial is now but a small neighborhood in the vibrant Caribbean city of Santo Domingo, full with life and things to see. Here are a few of the places recommended by my sister:
+            </p>
 
-                <!-- FILTER DROPDOWN -->
-                <div class="form-group">
-                    <em>Filter by: </em>
-                    <select data-bind="options: tags, value: selectedFilter, event: { change: onFilter}"
-                            class="form-control"></select>
-                </div>
+            <!-- FILTER DROPDOWN -->
+            <div class="form-group">
+                <em>Filter by: </em>
+                <select data-bind="options: tags, value: selectedFilter, event: { change: onFilter}" class="form-control"></select>
+            </div>
 
-                <!--GENERATE LOCATION LISTING -->
-                <ul data-bind="foreach: locations" class="locations-list">
-                    <li data-bind="text: $data.name, visible: $data.visible,
+            <!--GENERATE LOCATION LISTING -->
+            <ul data-bind="foreach: locations" class="locations-list">
+                <li data-bind="text: $data.name, visible: $data.visible,
                    css: { selected: $data == $root.selectedLocation() },
                    click: $root.onItemClick" class="location-item"></li>
-                </ul>
-            </div>
+            </ul>
+        </div>
+    </section>
+
+    <section>
+        <section id="map" class="col-sm-9 map-content">
+
         </section>
-
-        <section>
-            <section id="map" class="col-sm-9 map-content">
-
-            </section>
-            <footer class="">
-                <a href="" data-toggle="modal" data-target="#myModal">About this site</a>
-            </footer>
-        </section>
+        <footer class="">
+            <a href="" data-toggle="modal" data-target="#myModal">About this site</a>
+        </footer>
+    </section>
 
 
-    </div>
+</div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <span data-dismiss="modal" class="close">x</span>
-                    <p>
-                        This site was developed by <a href="#">Jennifer</a> for
-                        <a href="" target="_blank">Udacity's Front-End Nanodegree Specialization</a>,
-                        using <a href="http://knockoutjs.com/" target="_blank">Knockout Framework</a>,
-                        the <a href="https://developers.google.com/maps/" target="_blank">Google Maps API</a>,
-                        <a href="https://developer.foursquare.com/" target="_blank">Foursquare's API</a>
-                        and a tiny bit of <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>.
-                    </p>
-                    <hr>
-                    <div class="icons-set">
-                        <h3>Powered by</h3>
-                        <img src="img/foursquare-icon.png" class="icon"/>
-                        <img src="img/ko-logo.png" class="icon"/>
-                        <img src="img/google-maps-logo.svg" class="icon"/>
-                        <img src="img/bootstrap-solid.svg" class="icon"/>
-                    </div>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <span data-dismiss="modal" class="close">x</span>
+                <p>
+                    This site was developed by <a href="#">Jennifer</a> for
+                    <a href="" target="_blank">Udacity's Front-End Nanodegree Specialization</a>, using <a href="http://knockoutjs.com/" target="_blank">Knockout Framework</a>, the <a href="https://developers.google.com/maps/" target="_blank">Google Maps API</a>,
+                    <a href="https://developer.foursquare.com/" target="_blank">Foursquare's API</a> and a tiny bit of <a href="http://getbootstrap.com/" target="_blank">Bootstrap</a>.
+                </p>
+                <hr>
+                <div class="icons-set">
+                    <h3>Powered by</h3>
+                    <img src="img/foursquare-icon.png" class="icon" alt="Foursquare's icon" />
+                    <img src="img/ko-logo.png" class="icon" alt="Knockout's logo" />
+                    <img src="img/google-maps-logo.svg" class="icon" alt="Google Map's logo" />
+                    <img src="img/bootstrap-solid.svg" class="icon" alt="Bootstrap's logo" />
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" ></script>
-    <script src="js/lib/bootstrap.min.js"></script>
-    <script src="js/lib/knockout-3.4.1.js"></script>
-    <script src="js/content.js"></script>
-    <script src="js/fourSquare.js"></script>
-    <script src="js/map.js"></script>
-    <script src="js/app.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="js/lib/bootstrap.min.js"></script>
+<script src="js/lib/knockout-3.4.1.js"></script>
+<script src="js/content.js"></script>
+<script src="js/fourSquare.js"></script>
+<script src="js/map.js"></script>
+<script src="js/app.js"></script>
 
-    <script async defer
-        src='https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyA2WdAm_egMhv6ledFOuhHoNrWlMgDL1cc&callback=loadMap'
-        onerror='handleGoogleError()'>
-    </script>
+<script async defer src='https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyA2WdAm_egMhv6ledFOuhHoNrWlMgDL1cc&callback=loadMap' onerror='handleGoogleError()'>
+</script>
 </body>
+
 </html>
