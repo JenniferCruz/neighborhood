@@ -3,13 +3,18 @@ var map = {
     infoWindow : null, // TODO: style info window
     _currentAnimatedMarker : 'undefined',
     _populateInfoWindow : function (marker, locationID) {
-        this.infoWindow.marker = marker;
-        this.infoWindow.setContent('<p>Loading info for ' + marker.title + ' </p>'); // TODO: include 'loading' animation
-        this.infoWindow.open(map, marker);
-        fourSqr.setVenueContent(locationID, marker.title, function (html) {
-            map.infoWindow.setContent(html);
+        if (this.infoWindow.marker != marker) {
+            this.infoWindow.marker = marker;
+            this.infoWindow.setContent('<p>Loading info for ' + marker.title + ' </p>'); // TODO: include 'loading' animation
+            this.infoWindow.open(map, marker);
+            fourSqr.setVenueContent(locationID, marker.title, function (html) {
+                map.infoWindow.setContent(html);
+                map.infoWindow.open(map, marker);
+            });
+        } else {
+            // Just open it. Avoid requesting info to Foursquare that you already have.
             map.infoWindow.open(map, marker);
-        });
+        }
     },
     // TODO: Add a closeclick event listener for infowindow so that when it is closed, it also stops markers animation to prevent it from bouncing without an opened infowindow.
     // Ex:
