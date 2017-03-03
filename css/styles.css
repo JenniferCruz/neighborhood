@@ -34,11 +34,18 @@ header {
     color: #fed41c;
 }
 
-.caret {
+.glyphicon-align-justify,
+.glyphicon-remove {
+    font-size: 30px;
+    position: relative;
     float: right;
-
 }
 
+.glyphicon-align-justify:hover,
+.glyphicon-remove:hover {
+    cursor: pointer;
+    opacity: .5;
+}
 
 .icon {
     width: 90px;
@@ -82,8 +89,8 @@ footer {
 }
 
 @media (min-width: 767px) {
-    button.close,
-    .caret {
+    .glyphicon-remove,
+    .glyphicon-align-justify {
         display: none;
     }
 }
