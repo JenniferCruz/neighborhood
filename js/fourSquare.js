@@ -8,7 +8,7 @@ var fourSqr = {
 
 
 var Handler = function (template) {
-    const obj = {};
+    var obj = {};
 
     obj.resolve = function (id, query, callback) {
         // The handler starts resolution by requesting the venue to FourSquare
@@ -28,7 +28,7 @@ var Handler = function (template) {
         // TODO: Display all photos from FourSquare in a small gallery
         // TODO: Filter photos by data.response.photos.items[i].visibility === 'public'
         // TODO: Store img url for faster resolution next time same info is requested during current session
-        const self = this;
+        var self = this;
         $.get(url, function (data, status) {
             if (status === 'success' && data.response.photos.items.length > 0)
                 template.setPhotoHTML(data.response.photos.items[0]); // why the first one?
@@ -39,7 +39,7 @@ var Handler = function (template) {
     };
 
     obj._requestVenue = function(url, id, callback) {
-        const self = this;
+        var self = this;
 
         $.get(url, function (data, status) {
             if (status === 'success') {
@@ -59,7 +59,7 @@ var Handler = function (template) {
         });
 
         // inner function to find the right venue in Four Square's response
-        const _find = function (id, data) {
+        var _find = function (id, data) {
             for (var i = 0; i < data.response.venues.length; i++)
                 if (data.response.venues[i].id === id)
                     return data.response.venues[i];
@@ -71,7 +71,7 @@ var Handler = function (template) {
 };
 
 var TemplateAssembler = function () {
-    const obj = {};
+    var obj = {};
 
     obj._top = '';
     obj._center = '';
@@ -81,8 +81,8 @@ var TemplateAssembler = function () {
         img: '<img src="' + '#PREFIX#' + '180' + '#SUFFIX#' +'">',
         phone: '<p class="info-venue-content"><strong>Phone</strong>: ' + '#PHONE#' + '</p>',
         address: '<p class="info-venue-content"><strong>Address</strong>: ' + '#ADDRESS#' + '</p>',
-        fourSqrLink:  '<p><a href="' +   'https://foursquare.com/v/' + '#ID#' + '?ref=' + connector.clientID
-                        + '" target="_blank" class="info-venue-content">Checkout more at FourSquare></a></p>'
+        fourSqrLink:  '<p><a href="' +   'https://foursquare.com/v/' + '#ID#' + '?ref=' + connector.clientID +
+            '" target="_blank" class="info-venue-content">Checkout more at FourSquare></a></p>'
     };
 
     obj.setVenueHTML = function (venue) {
@@ -116,14 +116,14 @@ var connector = {
     _clientSecret: 'PV23XIPOND4OLQN5Q3BIAWDNQIQ2YNC01DX5JTBSJSAY10NW',
     _APIVersionDate: '20130815',
     getVenueURL: function(query) {
-        return "https://api.foursquare.com/v2/venues/search?client_id="
-            + this.clientID + "&client_secret=" + this._clientSecret + "&" + "v=" + this._APIVersionDate
-            + "&ll=18.4726498,-69.8865431&query=" + query;
+        return "https://api.foursquare.com/v2/venues/search?client_id=" +
+            this.clientID + "&client_secret=" + this._clientSecret + "&" + "v=" +
+            this._APIVersionDate + "&ll=18.4726498,-69.8865431&query=" + query;
     },
     getPhotoURL: function (id) {
-        return "https://api.foursquare.com/v2/venues/" + id
-            + "/photos?client_id=" + this.clientID
-            + "&client_secret=" + this._clientSecret
-            + "&v=" + this._APIVersionDate;
+        return "https://api.foursquare.com/v2/venues/" + id +
+            "/photos?client_id=" + this.clientID +
+            "&client_secret=" + this._clientSecret +
+            "&v=" + this._APIVersionDate;
     }
 };
