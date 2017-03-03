@@ -16,14 +16,6 @@ var map = {
             map.infoWindow.open(map, marker);
         }
     },
-    // TODO: Add a closeclick event listener for infowindow so that when it is closed, it also stops markers animation to prevent it from bouncing without an opened infowindow.
-    // Ex:
-    // google.maps.event.addListener(infowindow, 'closeclick', function() {
-    //     // stop marker animation here
-    // });
-    // Reference: InfoWindow class documentation @Google Developers
-    // https://developers.google.com/maps/documentation/javascript/reference#InfoWindow
-
     onMarkerClick : function (marker, location, caller) {
         var markerAnimation = marker.getAnimation();
         // Quite the currently animated marker, if any
@@ -35,6 +27,7 @@ var map = {
         // if clicked marker was already animated, quite it
         if (markerAnimation !== null) {
             marker.setAnimation(null);
+            map.infoWindow.close();
         } else {
             marker.setAnimation(google.maps.Animation.BOUNCE); // TODO: Change animation
             this._populateInfoWindow(marker, location.fourSqrID);
@@ -70,6 +63,11 @@ var loadMap = function () {
     });
 
     map.infoWindow = new google.maps.InfoWindow();
+
+    map.infoWindow.addListener('closeclick', function() {
+        // Stop its marker's animation
+        map.onMarkerClick(this.marker);
+     });
 
     var addMarkerClicklistener = function (marker, location) {
         return function () {
