@@ -19,14 +19,22 @@ var Handler = function (template) {
 
     obj._template = template;
 
+    obj._apologizeToClient = function (callback) {
+        template.setVenueHTML();
+        callback(template.html());
+    };
+
     obj._photo = function (url, callback) {
         // TODO: Display all photos from FourSquare in a small gallery
         // TODO: Filter photos by data.response.photos.items[i].visibility === 'public'
         // TODO: Store img url for faster resolution next time same info is requested during current session
+        const self = this;
         $.get(url, function (data, status) {
             if (status === 'success' && data.response.photos.items.length > 0)
                 template.setPhotoHTML(data.response.photos.items[0]); // why the first one?
             callback(template.html());
+        }).catch(function () {
+            self._apologizeToClient(callback);
         });
     };
 
@@ -44,8 +52,10 @@ var Handler = function (template) {
                     callback(template.html());
             }
             else
-                callback(template.html());
-            // TODO: Support photo request even if venue request was not a success
+                self._apologizeToClient(callback);
+                // TODO: Support photo request even if venue request was not a success
+        }).catch(function () {
+            self._apologizeToClient(callback);
         });
 
         // inner function to find the right venue in Four Square's response
