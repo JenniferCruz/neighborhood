@@ -75,6 +75,19 @@ header {
     position: relative;
 }
 
+/* internal div in InfoWindow */
+.gm-style-iw {
+    max-width: 200px;
+}
+
+.info-venue-title {
+    color: #F95C4A;
+}
+
+.info-venue-content {
+    margin: 8px 0 0;
+}
+
 footer {
     position: absolute;
     z-index: 99;
